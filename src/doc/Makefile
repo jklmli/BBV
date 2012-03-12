@@ -6,7 +6,9 @@ build:
 	@@echo "Compiling LaTeX..."
 	@@pdflatex $(PAPER).tex
 	@@bibtex $(PAPER).aux
-	# Need to execute again to add BibTeX extras
+	# Need to execute again to add BiBTeX bibliography 
+	@@pdflatex $(PAPER).tex
+	# Need to execute yet again to replace citations
 	@@pdflatex $(PAPER).tex
 
 clean:
