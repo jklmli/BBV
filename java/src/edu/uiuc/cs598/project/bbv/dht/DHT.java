@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import edu.uiuc.cs598.project.bbv.node.Node;
 
-public interface DHTInterface {
+public interface DHT {
 
 	public void registerNodeResource(Node node, UUID resourceId);
 
