@@ -1,11 +1,12 @@
+DOCDIR = src/doc
 PAPER = cs598
 
 .PHONY: doc
 
 doc:
-	@@make -C src/doc build
-	@@mv src/doc/$(PAPER).pdf doc/
-	@@make -C src/doc clean
+	@@make -C $(DOCDIR) build
+	@@mv $(DOCDIR)$(PAPER).pdf doc/
+	@@make -C $(DOCDIR) clean
 
 clean:
 	@@echo "Removing docs..."

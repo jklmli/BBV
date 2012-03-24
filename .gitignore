@@ -1,2 +1,11 @@
 # Compiled .pdf
 doc/*.pdf
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# Intellij
+.idea/
+.iml
