@@ -161,11 +161,13 @@ Verification methods are used to assess peer behavior for compensation or punish
 Stuff here ~\cite{milano}
 
 \subsection{Eigen-Trust Algorithm}
+
 Stuff here ~\cite{kamvar}
 %----------------------------------------------------------------------
 % SECTION II: Design
 %----------------------------------------------------------------------
 \section{Design}
+
 
 \subsection{System Model}
 The system model that we have designed places roles upon all nodes.  These roles play a vital role in the user transaction.
@@ -178,7 +180,14 @@ The system model that we have designed places roles upon all nodes.  These roles
 Our innovative contribution is the design of the distributed broker utilizing virtual currency in P2P storage.  Recent research has evaluated the role of the broker has an ideal intermediary.  Our team is taking that idea a step further.  Instead of naming a single broker to handle transactions we have decided to explore and implement a distributed broker.
 
 \subsection{Distributed Broker}
-In order to reduce the impact that a malicious broker could have on the system the role of broker can be distributed to multiple nodes.  The data decryption key can be dispersed using a secret sharing algorithm.  In this case the consumer would send the payment authorization to each broker along with the hash of the encrypted data.  If the encrypted hash is verified then each broker would send their fragment of the decryption key to the consumer and the payment authorization to the bank nodes.  A bank node will not consider the payment authorization as valid until it is received from a threshold number of brokers.   A node can only be a broker for a specific fragment based on its id.  Each broker must be able to verify that the payment authorization provided by the consumer is for the same provider that provided the data.  The data provider has access to the data decryption key and so is able to generate the fragments of the key that each broker holds.  The data provider will give the consumer their id encrypted with a key generated based on each decryption key fragment.  The consumer can then give each encrypted id to the appropriate broker.  Each broker can then decrypt the encrypted id by generating the same encryption key based on the data decryption key fragment they hold.  If the payment authorization does not match the decrypted id then the broker will reject the transaction.
+In order to reduce the impact that a malicious broker could have on the system the role of broker can be distributed to multiple nodes.  The data decryption key can be dispersed using a secret sharing algorithm.  In this case the consumer would send the payment authorization to each broker along with the hash of the encrypted data.  If the encrypted hash is verified then each broker would send their fragment of the decryption key to the consumer and the payment authorization to the bank nodes.  A bank node will not consider the payment authorization as valid until it is received from a threshold number of brokers.   A node can only be a broker for a specific fragment based on its id.  Each broker must be able to verify that the payment authorization provided by the consumer is for the same provider that provided the data.  The data provider has access to the data decryption key and so is able to generate the fragments of the key that each broker holds.  The data provider will give the consumer their id encrypted with a key generated based on each decryption key fragment.  The consumer can then give each encrypted id to the appropriate broker.  Each broker can then decrypt the encrypted id by generating the same encryption key based on the data decryption key fragment they hold.  If the payment authorization does not match the decrypted id then the broker will reject the transaction (see Fig. 1).
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.42]{graphics/transaction.jpg}
+  \caption{A transaction involving a distributed broker.}
+  \end{center}
+\end{figure}
 
 Single broker solutions would entail P2P interactions being funneled through the lone broker leading to bottlenecks. The associated drawbacks in scaling, increased latencies due to queuing delays and the single point of failure that such a scheme constitutes are among the reasons favoring a distributed model being in place.
 
