@@ -14,7 +14,7 @@
 
 % first, uncomment the desired options:
 \documentclass[%
-				11pt,
+				10pt,
         %draft,
         %submission,
         %compressed,
@@ -210,6 +210,9 @@ A set of bank nodes store the currency held by each node.  A node does not have 
 \end{enumerate}
 In order for the broker to perform its duties it must have access to both the encrypted data hash and its fragment of the decryption key.  The data provider cannot be trusted to encrypt the data and provide this information to the broker.  If the broker has previously downloaded the data then it will have access to both the encrypted data hash and the decryption key otherwise a node can request its fragment of the decryption key from any node that has the complete decryption key.  Downloading newly added data carries with it an increased risk because there are no third-party brokers available.  Data consumers can use the number of available brokers as a criterion for determining how much to pay for a data transfer.  
 
+\subsection{Storage}
+Stuff here
+
 \subsection{Automated transaction valuation based on reputation parameters}
 Because of the risk of fraud inherent in peer-to-peer systems data consumers should attempt to use the most reputable data providers available.  It is expected that highly reputable data providers should receive more currency units per transaction than less reputable data providers.  Conversely data providers may charge less to more reputable data consumers.  The bank nodes of a node will track the following statistics:
 \begin{itemize}
@@ -229,6 +232,21 @@ Data consumers will also use the following information when determining how much
 \item A measure of the value the consumer places on obtaining the data
 \end{itemize}
 The state of the network is expected to be constantly changing.  Data consumers should be capable of automatically adjusting their valuations as network conditions change. 
+
+\subsection{Distribute Hash Table}
+Stuff here
+
+%----------------------------------------------------------------------
+% SECTION III: Simulation
+%----------------------------------------------------------------------
+\section{Simulation Experiments}
+
+\subsection{Simulation Framework}
+Stuff here
+
+
+\subsection{Simulation Results}
+Stuff here
 
 % try out a theorem...
 %\newtheorem{theorem}{Theorem}

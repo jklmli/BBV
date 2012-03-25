@@ -1,4 +1,4 @@
-DOCDIR = src/doc
+DOCDIR = src/doc/
 PAPER = cs598
 
 .PHONY: doc

@@ -1,6 +1,8 @@
 # Compiled .pdf
 doc/*.pdf
 
+.*
+
 # Eclipse
 .project
 .classpath
