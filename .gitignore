@@ -2,10 +2,10 @@
 doc/*.pdf
 
 # Eclipse
-.project
+*.project
 .classpath
 .settings/
 
 # Intellij
 .idea/
-.iml
+*.iml
