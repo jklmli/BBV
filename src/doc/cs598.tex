@@ -54,6 +54,10 @@
 % In order to use the figure-defining commands in ieeefig.sty...
 \usepackage{ieeefig}
 
+% Added Margins
+\usepackage[left=1.5in, right=1.5in, top=1.0in, bottom=1.0in]{geometry}
+\usepackage{layout}
+
 \begin{document}
 
 %----------------------------------------------------------------------
@@ -184,7 +188,7 @@ In order to reduce the impact that a malicious broker could have on the system t
 
 \begin{figure}
   \begin{center}
-    \includegraphics[height=85mm,width=85mm]{graphics/transaction.jpg}
+    \includegraphics[height=85mm,width=65mm]{graphics/transaction.jpg}
   \caption{A transaction involving a distributed broker.}
   \end{center}
 \end{figure}
@@ -247,6 +251,13 @@ Stuff here
 
 \subsection{Simulation Results}
 Stuff here
+
+%----------------------------------------------------------------------
+% SECTION IV: Conclusion
+%----------------------------------------------------------------------
+\section{Conclusion}
+Milestone 3
+
 
 % try out a theorem...
 %\newtheorem{theorem}{Theorem}
