@@ -164,9 +164,9 @@ Verification methods are used to assess peer behavior for compensation or punish
 \subsection{Peer-to-Peer Data Quality}
 In a peer-to-peer network access and quality of data are essential.  The exchange of poor quality data can deteriorate the quality of stored data as a whole in the peer-to-peer network.  The DaQuinCIS architecture ~\cite{Milano} implements a data quality broker that allows users access to the best available quality data without the knowledge of where that data is actually stored.  This is accomplished by having a mediator interact with the user and present that user an integrated view of the databases where the user can query for data.  In order to determine if stored data is of good quality, a few researchers have proposed mappings between schemas, which are expressed by assertions called Query Correspondence Assertions.  Our aim is to preserve not only the validity of resources and transfer of data but quality as well.  As the user¿s reputation is increasing, so is the integrity of the data they store.
 
-\subsection{Eigen-Trust Algorithm}
+\subsection{Minimizing Malicious Peers}
+Malicious peers harm the trustworthiness of a peer-to-peer network.  A peer with malicious intent can adversely affect the network by introducing inauthentic or corrupt data ~\cite{kamvar}.  In our project a malicious peer is identified as a user who has non-cooperating behaviors.  The user may not deliver the expected data, may not pay expected currency or some combination of non-cooperating behaviors.  A peer system that is based on global trust must provide a system of trust based on a peer¿s history. The Eigentrust algorithm addresses way to assign trust.  The algorithm is based on the notion that if peer i trusts any peer j it would also trust the peers trusted by j ~\cite{kamvar}.  In peer-to-peer simulations some sort of trust value is necessary.  We are addressing this by using currency as a metric of gained trust.  We reward those who have contributed resources with currency in order for that user to acquire resources.
 
-Stuff here ~\cite{kamvar}
 %----------------------------------------------------------------------
 % SECTION II: Design
 %----------------------------------------------------------------------
