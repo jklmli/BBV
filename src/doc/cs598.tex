@@ -238,7 +238,17 @@ Data consumers will also use the following information when determining how much
 The state of the network is expected to be constantly changing.  Data consumers should be capable of automatically adjusting their valuations as network conditions change. 
 
 \subsection{Distributed Hash Table}
-Stuff here
+Kademlia was chosen as an alternative to Chord for use as the DHT serving node 
+lookups.  It has several advantages over its more well-known brethren. 
+~\cite{maymounkov} Lookups spread information about the network, reducing the 
+traffic of overhead control information.  The use of the XOR metric to 
+calculate distances between nodes provides for a more flexible and dynamic 
+routing table, allowing it to send out multiple queries that are asynchronous.  
+This completely sidesteps the problem of timeout delays, since the system can 
+easily select the result of any of the asynchronous calls, or even send out new 
+ones.  Furthermore, Kademlia's use of a single routing algorithm, as opposed to 
+the dual gauge-and-pinpoint algorithms or other protocols, is both easier to 
+understand and implement from a design perspective.
 
 %----------------------------------------------------------------------
 % SECTION III: Simulation
