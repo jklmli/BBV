@@ -256,45 +256,55 @@ understand and implement from a design perspective.
 \subsection{Simulation Framework}
 In order to evaluate the effectiveness of our system design we will be implementing a simulated peer to peer cloud storage network.  This approach will allow us to quickly test many scenarios involving a large number of nodes and data transfers.  In order to implement the simulation we will be combining fully functional component implementations with simulation component implementations.  The simulation will be driven by simulated nodes with various behaviors.  These simulated nodes will perform the actions that they typically would in the real system and may be fully cooperative or uncooperative in various ways.  A simulated node is made by combining simulated behaviors for each of the roles the node may take in the system.
 
-Data Consumer Node
+\begin{center}
+  \begin{tabular}{ p{6.25cm} }
+    \bf Data Consumer Node \\ \hline
+    \hline
+    Fully cooperative \\ \hline
+    Fails to provide payment to the broker with a given probability \\ \hline
+    Fails to provide correct payment amount to the broker with a given probability \\ \hline
+    Fails to provide payment transfer for the correct node to the broker with a given probability \\ \hline
+    Permanently stops consuming data with a given probability \\
+    \hline
+  \end{tabular}
+\end{center}
 
-\begin{itemize}
-\item Fully cooperative
-\item Fails to provide payment to the broker with a given probability
-\item Fails to provide correct payment amount to the broker with a given probability
-\item Fails to provide payment transfer for the correct node to the broker with a given probability
-\item Permanently stops consuming data with a given probability
-\end{itemize}
+\begin{center}
+  \begin{tabular}{ p{6.25cm} }
+    \bf Data Provider Node \\ \hline
+    \hline
+    Fully cooperative \\ \hline
+    Fails to provide correct data with a given probability \\ \hline
+    Provides data at a slow rate with a given probability \\ \hline
+    Permanently stops providing data with a given probability \\ \hline
+  \end{tabular}
+\end{center}
 
-Data Provider Node
+\begin{center}
+  \begin{tabular}{ p{6.25cm} }
+    \bf Bank Node \\ \hline
+    \hline
+    Fully cooperative \\ \hline
+    Fails to store currency transfer authorizations with a given probability \\ \hline
+    Accepts invalid transfer authorizations with a given probability \\ \hline
+    Declines valid transfer authorizations with a given probability \\ \hline
+    Fails to forward transfered currency units to the proper bank nodes with a given probability \\ \hline
+    Permanently stops providing bank node functions with a given probability \\ \hline
+  \end{tabular}
+\end{center}
 
-\begin{itemize}
-\item Fully cooperative
-\item Fails to provide correct data with a given probability
-\item Provides data at a slow rate with a given probability
-\item Permanently stops providing data with a given probability
-\end{itemize}
+\begin{center}
+  \begin{tabular}{ p{6.25cm} }
+    \bf Broker Node \\ \hline
+    \hline
+    Fully cooperative \\ \hline
+    Sends decryption key to consumer without proper payment with a given probability \\ \hline
+    Sends decryption key to consumer without forwarding payment transfer to bank nodes with a given probability \\ \hline
+    Sends invalid decryption key to consumer after authorizing payment \\ \hline
+    Fails to validate that payment transfer is for correct provider with a given probability \\ \hline
+  \end{tabular}
+\end{center}
 
-Bank Node
-
-\begin{itemize}
-\item Fully cooperative
-\item Fails to store currency transfer authorizations with a given probability
-\item Accepts invalid transfer authorizations with a given probability
-\item Declines valid transfer authorizations with a given probability
-\item Fails to forward transfered currency units to the proper bank nodes with a given probability
-\item Permanently stops providing bank node functions with a given probability
-\end{itemize}
-
-Broker Node
-
-\begin{itemize}
-\item Fully cooperative
-\item Sends decryption key to consumer without proper payment with a given probability
-\item Sends decryption key to consumer without forwarding payment transfer to bank nodes with a given probability
-\item Sends invalid decryption key to consumer after authorizing payment
-\item Fails to validate that payment transfer is for correct provider with a given probability
-\end{itemize}
 
 During each simulation the following statistics will be collected to measure the effectiveness of the system:
 
@@ -311,7 +321,7 @@ During each simulation the following statistics will be collected to measure the
 When a node joins the simulated network it will either be made a fully cooperative node or an uncooperative node.  The probability that a node will be uncooperative along with the behavior probabilities will be set based on the simulation parameters.
 
 \subsection{Simulation Results}
-Stuff here
+Implementation of the simulation is currently in progress.
 
 %----------------------------------------------------------------------
 % SECTION IV: Conclusion
