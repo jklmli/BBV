@@ -1,9 +1,9 @@
-package edu.uiuc.cs598.project.bbv.dht;
+package dht;
 
 import java.util.List;
 import java.util.UUID;
 
-import edu.uiuc.cs598.project.bbv.node.Node;
+import node.Node;
 
 public interface DHT {
 

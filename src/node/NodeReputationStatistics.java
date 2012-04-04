@@ -1,4 +1,4 @@
-package edu.uiuc.cs598.project.bbv.node;
+package node;
 
 public class NodeReputationStatistics {
 

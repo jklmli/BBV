@@ -1,4 +1,4 @@
-package edu.uiuc.cs598.project.bbv.simulation.dht;
+package simulation.dht;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import edu.uiuc.cs598.project.bbv.dht.DHT;
-import edu.uiuc.cs598.project.bbv.node.Node;
+import node.Node;
+import dht.DHT;
 
 public class MemoryDHT implements DHT {
 

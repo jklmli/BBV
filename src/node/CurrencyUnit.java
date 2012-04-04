@@ -1,4 +1,4 @@
-package edu.uiuc.cs598.project.bbv;
+package node;
 
 import java.util.UUID;
 

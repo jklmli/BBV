@@ -1,9 +1,7 @@
-package edu.uiuc.cs598.project.bbv.node;
+package node;
 
 import java.util.List;
 import java.util.UUID;
-
-import edu.uiuc.cs598.project.bbv.CurrencyUnit;
 
 public interface BankNode extends Node {
 

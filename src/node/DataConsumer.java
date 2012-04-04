@@ -1,8 +1,8 @@
-package edu.uiuc.cs598.project.bbv.node;
+package node;
 
 import java.util.UUID;
 
-import edu.uiuc.cs598.project.bbv.data.Data;
+import data.Data;
 
 public interface DataConsumer {
 

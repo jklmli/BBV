@@ -1,7 +1,15 @@
-package edu.uiuc.cs598.project.bbv.simulation.node;
+package simulation.node;
 
-import edu.uiuc.cs598.project.bbv.node.DataConsumer;
+import java.util.UUID;
+
+import node.DataConsumer;
 
 public class WellBehavedDataConsumer implements DataConsumer {
+
+	@Override
+	public DataDownloadTask createDownloadTask(UUID dataId,
+			DataImportance importance) {
+		return null;
+	}
 
 }

@@ -1,7 +1,11 @@
-package edu.uiuc.cs598.project.bbv.simulation.node;
+package simulation.node;
 
-import edu.uiuc.cs598.project.bbv.node.DataProvider;
+import node.DataProvider;
 
 public class WellBehavedDataProvider implements DataProvider {
+
+	@Override
+	public void registerDataRequest(DataRequest dataRequest) {
+	}
 
 }

@@ -1,4 +1,4 @@
-package edu.uiuc.cs598.project.bbv.simulation.node;
+package simulation.node;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import edu.uiuc.cs598.project.bbv.CurrencyUnit;
-import edu.uiuc.cs598.project.bbv.node.BankNode;
+import node.BankNode;
+import node.CurrencyUnit;
 
 public class MemoryBankNode implements BankNode {
 
