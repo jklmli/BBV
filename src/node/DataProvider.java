@@ -2,7 +2,7 @@ package node;
 
 import java.util.UUID;
 
-public interface DataProvider {
+public interface DataProvider extends Node{
 
 	public static class DataRequest {
 		private UUID consumerNodeId;
