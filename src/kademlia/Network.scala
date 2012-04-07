@@ -24,7 +24,7 @@ class Network {
   }
 
   def lookup(id: UUID): Node = {
-    val matches = nodes.filter(node => node.id == id)
+    val matches = nodes.filter(_.id == id)
     assert(matches.size == 1)
 
     matches.head

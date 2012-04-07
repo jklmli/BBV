@@ -3,7 +3,7 @@ import java.util.UUID
 import util.Random
 
 object Node {
-  // Ints are 32 bits
+  // UUID hashcodes are Ints, which are 32 bits
   private final val buckets = 32
   private final val bucketDepth = 4
 }
@@ -51,9 +51,9 @@ class Node(introducer: Node) {
 
   def die() {
     this.buckets
-      .flatten(set => set)
+      .flatten(_)
       // Notify all peers of exit
-      .foreach(node => node disconnect this)
+      .foreach(_ disconnect this)
   }
 
   private def connect(that: Node) { this.buckets(bucketize(that)) += that }
