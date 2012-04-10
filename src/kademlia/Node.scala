@@ -7,6 +7,8 @@ object Node {
   // UUID hashcodes are Ints, which are 32 bits
   private final val buckets = 32
   private final val bucketDepth = 4
+
+  private final val threads = 3
 }
 
 class Node(introducer: Node) {
@@ -26,24 +28,33 @@ class Node(introducer: Node) {
   def ping(node: Node): Boolean = closestNodes(node.id).exists(_ == node)
 
   // Finds the _bucketDepth_ closest Nodes
-  def closestNodes(id: UUID): Set[Node] = {
-    // TODO: Inaccurate functionality
-    var remaining = Node.bucketDepth
+  private def closestNodes(key: UUID): scala.collection.immutable.Set[Node] = {
+    val closestIndices =
+      buckets
+        .indices
+        .sortBy(x => (x - distanceTo(key)).abs)
 
-    buckets
-      .foldLeft(Set[Node]())((nodes, bucket) =>
-      nodes ++ bucket.takeWhile(_ => {
-        remaining -= 1
-        remaining >= 0
-      })
-    )
+    val closestBuckets =
+      closestIndices
+        .map(buckets(_))
+
+    closestBuckets
+      .flatten(set => set)
+      .slice(0, Node.threads)
+      .toSet
   }
 
-  def findFile(that: Node, key: UUID): Int = {
-    1
+  def findNode(key: UUID): Node = {
+    new Node()
   }
 
-  def send(that: Node, key: UUID) { that.receive(this, key) }
+  def findFile(that: Node, key: UUID): Boolean = {
+    new Boolean()
+  }
+
+  def send(that: Node, key: UUID) {
+    that.receive(this, key)
+  }
 
   def receive(that: Node, key: UUID) {
     assert(!this.files(key))
@@ -72,11 +83,15 @@ class Node(introducer: Node) {
       .foreach(_ disconnect this)
   }
 
-  private def connect(that: Node) { bucketWith(that) += that }
+  private def connect(that: Node) {
+    bucketWith(that) += that
+  }
 
-  private def disconnect(that: Node) { bucketWith(that) -= that }
+  private def disconnect(that: Node) {
+    bucketWith(that) -= that
+  }
 
-  // Determine which bucket another node should be placed in.
+  // Returns the bucket containing a node that exists.
   private def bucketWith(that: Node): Set[Node] = {
     var prefix = ""
     val index = this.id.hashCode.toBinaryString
@@ -85,8 +100,9 @@ class Node(introducer: Node) {
       !(that.id.hashCode.toBinaryString startsWith prefix)
     })
 
+    assert(index != -1)
     buckets(index)
   }
 
-  private def distanceTo(that: Node): Int = this.id.hashCode ^ that.id.hashCode
+  private def distanceTo(key: UUID): Int = this.id.hashCode ^ key.hashCode
 }
