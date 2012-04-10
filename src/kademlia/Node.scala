@@ -11,7 +11,7 @@ object Node {
   private final val threads = 3
 }
 
-class Node(introducer: Node) {
+class Node {
 
   val id = UUID.randomUUID()
 
@@ -22,8 +22,6 @@ class Node(introducer: Node) {
       .map(_ => UUID.randomUUID())
 
   private val buckets: IndexedSeq[Set[Node]] = IndexedSeq.fill(Node.buckets)(Set())
-
-  this connect introducer
 
   def ping(node: Node): Boolean = closestNodes(node.id).exists(_ == node)
 
@@ -62,20 +60,6 @@ class Node(introducer: Node) {
     this.files += key
   }
 
-  def +(that: Node) {
-    this.connect(that)
-    that.connect(this)
-
-    this
-  }
-
-  def -(that: Node) {
-    this.disconnect(that)
-    that.disconnect(this)
-
-    this
-  }
-
   def die() {
     this.buckets
       .flatten(set => set)
@@ -83,11 +67,25 @@ class Node(introducer: Node) {
       .foreach(_ disconnect this)
   }
 
-  private def connect(that: Node) {
+  def connect(that: Node): Node = {
+    this.store(that)
+    that.store(this)
+
+    this
+  }
+
+  def disconnect(that: Node): Node = {
+    this.unstore(that)
+    that.unstore(this)
+
+    this
+  }
+
+  private def store(that: Node) {
     bucketWith(that) += that
   }
 
-  private def disconnect(that: Node) {
+  private def unstore(that: Node) {
     bucketWith(that) -= that
   }
 

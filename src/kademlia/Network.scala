@@ -1,21 +1,24 @@
 import java.util.UUID
 
-import collection.immutable.Set
+import collection.mutable.Set
 import util.Random
 
 class Network {
-  var nodes = Set[Node]()
+  private val nodes = Set[Node]()
 
   // Default to a random node for introductions.
   def join(introducer: Node = random(nodes)): Node = {
-    val member = new Node(introducer)
-    this.nodes += member
-    member
+    val newbie = new Node()
+    newbie connect introducer
+
+    this.nodes += newbie
+    this.nodes
   }
 
-  def leave(node: Node): Set[Node] = {
-    node.die()
+  def leave(member: Node): Set[Node] = {
+    member.die()
 
+    this.nodes -= member
     this.nodes
   }
 
@@ -41,6 +44,8 @@ class Network {
 
     transfer(file, sender, receiver)
   }
+
+  def size: Int = this.nodes.size
 
   private def select[A](iter: Iterable[A], index: Int): A =
     iter.slice(index, index).head
