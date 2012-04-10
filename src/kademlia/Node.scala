@@ -1,6 +1,7 @@
 import java.util.UUID
-
 import util.Random
+
+import scala.collection.mutable.Set
 
 object Node {
   // UUID hashcodes are Ints, which are 32 bits
@@ -13,16 +14,16 @@ class Node(introducer: Node) {
   val id = UUID.randomUUID()
 
   // Initially associate 1-10 'files' (represented by hashes) with this Node.
-  var files = Set[UUID]()
+  val files = Set[UUID]()
   files ++=
     (1 until (new Random()).nextInt(10) toList)
       .map(_ => UUID.randomUUID())
 
-  private var buckets: IndexedSeq[Set[Node]] = IndexedSeq.fill(Node.buckets)(Set())
+  private val buckets: IndexedSeq[Set[Node]] = IndexedSeq.fill(Node.buckets)(Set())
 
   this connect introducer
 
-  def ping(node: Node): Boolean = closestNodes(node.id).exists(node)
+  def ping(node: Node): Boolean = closestNodes(node.id).exists(_ == node)
 
   // Finds the _bucketDepth_ closest Nodes
   def closestNodes(id: UUID): Set[Node] = {
@@ -39,6 +40,7 @@ class Node(introducer: Node) {
   }
 
   def findFile(that: Node, key: UUID): Int = {
+    1
   }
 
   def send(that: Node, key: UUID) { that.receive(this, key) }
@@ -49,29 +51,41 @@ class Node(introducer: Node) {
     this.files += key
   }
 
+  def +(that: Node) {
+    this.connect(that)
+    that.connect(this)
+
+    this
+  }
+
+  def -(that: Node) {
+    this.disconnect(that)
+    that.disconnect(this)
+
+    this
+  }
+
   def die() {
     this.buckets
-      .flatten(_)
+      .flatten(set => set)
       // Notify all peers of exit
       .foreach(_ disconnect this)
   }
 
-  private def connect(that: Node) { this.buckets(bucketize(that)) += that }
+  private def connect(that: Node) { bucketWith(that) += that }
 
-  private def disconnect(that: Node) {
-    this.buckets =
-      this.buckets
-        .map(_ - that)
-  }
+  private def disconnect(that: Node) { bucketWith(that) -= that }
 
   // Determine which bucket another node should be placed in.
-  private def bucketize(that: Node) = {
+  private def bucketWith(that: Node): Set[Node] = {
     var prefix = ""
-    this.id.hashCode.toBinaryString
+    val index = this.id.hashCode.toBinaryString
       .indexWhere(character => {
       prefix += character
       !(that.id.hashCode.toBinaryString startsWith prefix)
     })
+
+    buckets(index)
   }
 
   private def distanceTo(that: Node): Int = this.id.hashCode ^ that.id.hashCode
