@@ -11,9 +11,22 @@ object Node {
 
 class Node(val id: UUID = UUID.randomUUID()) {
 
-  private val buckets = Seq.fill(Node.buckets)(scala.collection.mutable.Set())
+  private val buckets = Seq.fill(Node.buckets)(scala.collection.mutable.Set[Node]())
+  val files = scala.collection.mutable.Set[UUID]()
+
+  override def equals(that: Any): Boolean = {
+    that.isInstanceOf[Node] && that.hashCode == this.hashCode
+  }
+
+  override def hashCode = id.hashCode
 
   def ping(node: Node): Boolean = closestNodes(node.id).exists(_ == node)
+
+  def store(key: UUID) {
+    assert(!this.files(key))
+
+    this.files += key
+  }
 
   def findNode(key: UUID): Node = {
     new Node()
@@ -28,9 +41,7 @@ class Node(val id: UUID = UUID.randomUUID()) {
   }
 
   def receive(that: Node, key: UUID) {
-    assert(!this.files(key))
-
-    this.files += key
+    store(key)
   }
 
   def die() {
@@ -80,7 +91,7 @@ class Node(val id: UUID = UUID.randomUUID()) {
   }
 
   // Returns the bucket containing a node that exists.
-  private def bucketWith(that: Node): Set[Node] = {
+  private def bucketWith(that: Node): scala.collection.mutable.Set[Node] = {
     var prefix = ""
     val index = this.id.hashCode.toBinaryString
       .indexWhere(character => {
