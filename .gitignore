@@ -1,7 +1,6 @@
-# Compiled .pdf
+# Compiled
 doc/*.pdf
-
-.*
+*.class
 
 # Eclipse
 *.project
