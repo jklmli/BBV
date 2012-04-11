@@ -52,15 +52,15 @@ class Node(val id: UUID = UUID.randomUUID()) {
   }
 
   def connect(that: Node): Node = {
-    this.store(that)
-    that.store(this)
+    this.link(that)
+    that.link(this)
 
     this
   }
 
   def disconnect(that: Node): Node = {
-    this.unstore(that)
-    that.unstore(this)
+    this.unlink(that)
+    that.unlink(this)
 
     this
   }
@@ -82,11 +82,11 @@ class Node(val id: UUID = UUID.randomUUID()) {
       .toSet
   }
 
-  private def store(that: Node) {
+  private def link(that: Node) {
     bucketWith(that) += that
   }
 
-  private def unstore(that: Node) {
+  private def unlink(that: Node) {
     bucketWith(that) -= that
   }
 
