@@ -1,4 +1,4 @@
-package simulation.node.cooperating;
+package simulation.node;
 
 import java.util.Map;
 import java.util.UUID;
@@ -7,14 +7,14 @@ import node.DataProviderNode;
 import node.NodeManager;
 import data.Data;
 
-public class CooperatingDataProviderNode implements DataProviderNode {
+public class SimulatedDataProviderNode implements DataProviderNode {
 
 	private UUID nodeId;
 	private NodeManager nodeManager;
 	private Map<UUID, Data> dataStore;
 	
 	
-	public CooperatingDataProviderNode(UUID nodeId, NodeManager nodeManager, Map<UUID, Data> dataStore)
+	public SimulatedDataProviderNode(UUID nodeId, NodeManager nodeManager, Map<UUID, Data> dataStore)
 	{
 		this.nodeId = nodeId;
 		this.nodeManager = nodeManager;

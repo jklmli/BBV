@@ -9,9 +9,8 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 import simulation.node.MemoryNodeManager;
-import simulation.node.SimulationNode;
+import simulation.node.SimulatedNode;
 import data.Data;
-
 public class Simulation {
 
 	public static class Parameters
@@ -62,7 +61,7 @@ public class Simulation {
 	// Contains the id of every data chunk in the system.  
 	public Set<UUID> dataIds = new HashSet<UUID>();
 	
-	private List<SimulationNode> nodes = new ArrayList<SimulationNode>();
+	private List<SimulatedNode> nodes = new ArrayList<SimulatedNode>();
 
 	private Simulation()
 	{
@@ -98,7 +97,7 @@ public class Simulation {
 		}
 			
 		// Make node 0 a provider for all data
-		SimulationNode node0 = nodes.get(0);
+		SimulatedNode node0 = nodes.get(0);
 		for(UUID dataId : dataIds)
 		{
 			Data data = new Data("".getBytes());
@@ -107,7 +106,7 @@ public class Simulation {
 
 		// Perform operations
 		
-		for(SimulationNode node : nodes)
+		for(SimulatedNode node : nodes)
 		{
 			node.performOperation();
 		}

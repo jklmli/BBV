@@ -1,4 +1,4 @@
-package simulation.node.cooperating;
+package simulation.node;
 
 import java.util.Map;
 import java.util.UUID;
@@ -10,13 +10,13 @@ import node.NodeManager.NodeGroup;
 import simulation.Simulation;
 import data.Data;
 
-public class CooperatingDataConsumerNode implements DataConsumerNode {
+public class SimulatedDataConsumerNode implements DataConsumerNode {
 
 	private final UUID nodeId;
 	private final NodeManager nodeManager;
 	private final Map<UUID, Data> dataStore;
 	
-	public CooperatingDataConsumerNode(UUID nodeId, NodeManager nodeManager, Map<UUID, Data> dataStore)
+	public SimulatedDataConsumerNode(UUID nodeId, NodeManager nodeManager, Map<UUID, Data> dataStore)
 	{
 		this.nodeId = nodeId;
 		this.nodeManager = nodeManager;

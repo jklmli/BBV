@@ -13,11 +13,9 @@ import node.DataProviderNode;
 import node.Node;
 import node.NodeManager;
 import simulation.Simulation;
-import simulation.node.cooperating.CooperatingDataConsumerNode;
-import simulation.node.cooperating.CooperatingDataProviderNode;
 import data.Data;
 
-public class SimulationNode implements Node {
+public class SimulatedNode implements Node {
 
 	private final UUID id;
 
@@ -31,15 +29,15 @@ public class SimulationNode implements Node {
 	private final NodeManager nodeManager = new MemoryNodeManager();
 
 	
-	public SimulationNode(UUID id)
+	public SimulatedNode(UUID id)
 	{		
 		this.id = id;
 		
 		nodeManager.connect(this);
 		
 		// TODO: Initialize behaviors based on the simulation parameters
-		consumerNodeBehavior = new CooperatingDataConsumerNode(id, nodeManager, dataStore);
-		providerNodeBehavior = new CooperatingDataProviderNode(id, nodeManager, dataStore);
+		consumerNodeBehavior = new SimulatedDataConsumerNode(id, nodeManager, dataStore);
+		providerNodeBehavior = new SimulatedDataProviderNode(id, nodeManager, dataStore);
 		brokerNodeBehavior = null;
 		bankNodeBehavior = null;
 	}

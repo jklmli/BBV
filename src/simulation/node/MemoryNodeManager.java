@@ -63,11 +63,11 @@ public class MemoryNodeManager implements NodeManager {
 	private static Map<UUID, List<DataProviderNode>> dataProviderMap = 
 		new HashMap<UUID, List<DataProviderNode>>();
 	
-	private SimulationNode node;
+	private SimulatedNode node;
 	
 	@Override
-	public SimulationNode addNode() {
-		return new SimulationNode(UUID.randomUUID());
+	public SimulatedNode addNode() {
+		return new SimulatedNode(UUID.randomUUID());
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class MemoryNodeManager implements NodeManager {
 
 	@Override
 	public void connect(Node node) {
-		this.node = (SimulationNode) node;
+		this.node = (SimulatedNode) node;
 	}
 
 	@Override
