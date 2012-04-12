@@ -35,7 +35,6 @@ public class SimulatedNode implements Node {
 		
 		nodeManager.connect(this);
 		
-		// TODO: Initialize behaviors based on the simulation parameters
 		consumerNodeBehavior = new SimulatedDataConsumerNode(id, nodeManager, dataStore);
 		providerNodeBehavior = new SimulatedDataProviderNode(id, nodeManager, dataStore);
 		brokerNodeBehavior = null;
