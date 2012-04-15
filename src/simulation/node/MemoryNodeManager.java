@@ -11,6 +11,7 @@ import node.BrokerNode;
 import node.DataProviderNode;
 import node.Node;
 import node.NodeManager;
+import simulation.SimulationNode;
 
 public class MemoryNodeManager implements NodeManager {
 
@@ -63,11 +64,11 @@ public class MemoryNodeManager implements NodeManager {
 	private static Map<UUID, List<DataProviderNode>> dataProviderMap = 
 		new HashMap<UUID, List<DataProviderNode>>();
 	
-	private SimulatedNode node;
+	private SimulationNode node;
 	
 	@Override
-	public SimulatedNode addNode() {
-		return new SimulatedNode(UUID.randomUUID());
+	public SimulationNode addNode() {
+		return new SimulationNode(UUID.randomUUID());
 	}
 
 	@Override
@@ -77,7 +78,7 @@ public class MemoryNodeManager implements NodeManager {
 
 	@Override
 	public void connect(Node node) {
-		this.node = (SimulatedNode) node;
+		this.node = (SimulationNode) node;
 	}
 
 	@Override

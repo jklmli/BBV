@@ -15,12 +15,57 @@ public interface BrokerNode extends Node {
 		private Data providerToken;
 		private Set<CurrencyUnit> payment;
 		private Data encryptedDataHash;
+		
+		public Transaction(UUID consumerId, UUID providerId,
+				Data providerToken, Set<CurrencyUnit> payment,
+				Data encryptedDataHash) {
+			super();
+			this.consumerId = consumerId;
+			this.providerId = providerId;
+			this.providerToken = providerToken;
+			this.payment = payment;
+			this.encryptedDataHash = encryptedDataHash;
+		}
+		
+		public UUID getConsumerId() {
+			return consumerId;
+		}
+
+		public UUID getProviderId() {
+			return providerId;
+		}
+
+		public Data getProviderToken() {
+			return providerToken;
+		}
+
+		public Set<CurrencyUnit> getPayment() {
+			return payment;
+		}
+
+		public Data getEncryptedDataHash() {
+			return encryptedDataHash;
+		}		
 	}
 	
 	public static class DataProviderToken
 	{
 		private UUID providerId;
 		private int expectedPaymentAmount;
+
+		public DataProviderToken(UUID providerId, int expectedPaymentAmount) {
+			super();
+			this.providerId = providerId;
+			this.expectedPaymentAmount = expectedPaymentAmount;
+		}
+
+		public UUID getProviderId() {
+			return providerId;
+		}
+
+		public int getExpectedPaymentAmount() {
+			return expectedPaymentAmount;
+		}
 	}
 	
 	

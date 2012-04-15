@@ -14,4 +14,9 @@ public class CurrencyUnit {
 	public UUID getOwnerId() {
 		return ownerId;
 	}
+
+	public void transferTo(UUID ownerId)
+	{
+		this.ownerId = ownerId;
+	}
 }

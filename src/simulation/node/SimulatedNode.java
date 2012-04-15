@@ -1,44 +1,32 @@
 package simulation.node;
 
-import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
-import node.BankNode;
-import node.BrokerNode;
-import node.DataConsumerNode;
-import node.DataProviderNode;
 import node.Node;
 import node.NodeManager;
-import simulation.Simulation;
 import data.Data;
+import data.HashCodec;
+import data.SharedSecretCodec;
+import data.SymmetricEncryptionCodec;
 
-public class SimulatedNode implements Node {
+public abstract class SimulatedNode implements Node {
 
-	private final UUID id;
-
-	private final DataConsumerNode consumerNodeBehavior;
-	private final DataProviderNode providerNodeBehavior;
-	private final BrokerNode brokerNodeBehavior;
-	private final BankNode bankNodeBehavior;
+	protected UUID id;
+	protected NodeManager nodeManager;
+	protected Map<UUID, Data> dataStore;
 	
-	private final Map<UUID, Data> dataStore = new LinkedHashMap<UUID, Data>();
-	
-	private final NodeManager nodeManager = new MemoryNodeManager();
+	// TODO: Initialize these
+	protected final SymmetricEncryptionCodec encryptionCodec = null;
+	protected final HashCodec hashCodec = null;
+	protected final SharedSecretCodec sharedSecretCodec = null;
 
 	
-	public SimulatedNode(UUID id)
+	public SimulatedNode(UUID id, NodeManager nodeManager, Map<UUID, Data> dataStore)
 	{		
 		this.id = id;
-		
-		nodeManager.connect(this);
-		
-		consumerNodeBehavior = new SimulatedDataConsumerNode(id, nodeManager, dataStore);
-		providerNodeBehavior = new SimulatedDataProviderNode(id, nodeManager, dataStore);
-		brokerNodeBehavior = null;
-		bankNodeBehavior = null;
+		this.nodeManager = nodeManager;
+		this.dataStore = dataStore;
 	}
 	
 	@Override
@@ -46,33 +34,4 @@ public class SimulatedNode implements Node {
 		return id;
 	}
 
-	public void performOperation()
-	{
-		Set<UUID> dataIds = new HashSet<UUID>(Simulation.getInstance().getDataIds());
-		dataIds.removeAll(dataStore.keySet());
-		
-		if(dataIds.size() == 0)
-		{
-			return;
-		}
-		
-		UUID dataId = dataIds.iterator().next();
-		consumerNodeBehavior.getData(dataId);
-	}
-	
-	public void destroy()
-	{
-		nodeManager.disconnect();
-		nodeManager.removeNode();
-	}
-
-	public void addData(UUID dataId, Data data)
-	{
-		dataStore.put(dataId, data);
-		nodeManager.registerAsProviderForData(dataId);
-	}
-
-	public DataProviderNode getDataProviderNodeBehavior() {
-		return providerNodeBehavior;
-	}
 }
