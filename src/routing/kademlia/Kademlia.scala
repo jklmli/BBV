@@ -1,28 +1,11 @@
 import java.util.UUID
 
-import collection.mutable.Set
+import routing.Network
+
 import util.Random
 
-class KademliaNetwork {
-  private val nodes = Set[KademliaNode]()
-
-  // Default to a random node for introductions.
-  def join(introducer: KademliaNode = random(nodes)): KademliaNode = {
-    val newbie = new KademliaNode()
-    newbie connect introducer
-
-    this.nodes += newbie
-    this.nodes
-  }
-
-  def leave(member: KademliaNode): Set[KademliaNode] = {
-    member.die()
-
-    this.nodes -= member
-    this.nodes
-  }
-
-  def transfer(id: UUID, sender: KademliaNode, receiver: KademliaNode) {
+class Kademlia extends Network {
+  override def transfer(sender: KademliaNode, receiver: KademliaNode, block: Block) {
     sender.send(receiver, id)
   }
 
@@ -44,8 +27,6 @@ class KademliaNetwork {
 
     transfer(file, sender, receiver)
   }
-
-  def size: Int = this.nodes.size
 
   private def select[A](iter: Iterable[A], index: Int): A =
     iter.slice(index, index).head
