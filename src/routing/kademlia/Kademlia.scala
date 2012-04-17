@@ -1,7 +1,6 @@
 import java.util.UUID
 
 import routing.Network
-
 import util.Random
 
 class Kademlia extends Network {

@@ -15,11 +15,13 @@ abstract class Node[T <: Node[T]](val id: UUID = UUID.randomUUID()) {
   def link(that: T)
   def unlink(that: T)
 
-  def share(block: Block) {
+  def store(block: Block) {
+    assert !(files contains block)
     files += block
   }
 
-  def unshare(block: Block) {
+  def unstore(block: Block) {
+    assert (files contains block)
     files -= block
   }
 }

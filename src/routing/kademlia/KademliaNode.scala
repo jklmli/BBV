@@ -25,11 +25,6 @@ class KademliaNode extends Node[KademliaNode] {
 
   def ping(node: KademliaNode): Boolean = closestNodes(node.id).exists(_ == node)
 
-  def store(key: UUID) {
-    assert(!this.files(key))
-
-    this.files += key
-  }
 
   def findNode(key: UUID): KademliaNode = {
     new KademliaNode()
