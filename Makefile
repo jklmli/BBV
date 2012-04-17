@@ -1,11 +1,9 @@
-DOCDIR = src/doc/
-PAPER = cs598
+DOCDIR = doc/
 
 .PHONY: doc
 
 doc:
 	@@make -C $(DOCDIR) build
-	@@mv $(DOCDIR)$(PAPER).pdf doc/
 	@@make -C $(DOCDIR) clean
 
 clean:

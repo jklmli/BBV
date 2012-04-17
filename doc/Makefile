@@ -10,6 +10,8 @@ build:
 	@@pdflatex $(PAPER).tex
 	# Need to execute yet again to replace citations
 	@@pdflatex $(PAPER).tex
+	@@mkdir -p out/
+	@@mv $(PAPER).pdf out/
 
 clean:
 	@@echo "Removing LaTeX auto-gens..."
