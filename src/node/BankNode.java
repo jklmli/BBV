@@ -10,5 +10,6 @@ public interface BankNode extends Node {
 	public void remove(List<CurrencyUnit> currencyUnits);
 	
 	public List<CurrencyUnit> getCurrencyUnits(UUID nodeId, List<UUID> ids);
-	
+
+	public List<CurrencyUnit> getCurrencyUnits(UUID nodeId);
 }

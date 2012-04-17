@@ -1,6 +1,7 @@
 package simulation.node;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,10 @@ import data.Data;
 public class SimulatedDataConsumerNode extends SimulatedNode implements DataConsumerNode {
 
 	private final List<BankNode> bankNodes = new ArrayList<BankNode>();
-		
+	
+	private final Map<UUID, CurrencyUnit> currencyMap = new HashMap<UUID, CurrencyUnit>();
+	
+	
 	public SimulatedDataConsumerNode(UUID nodeId, NodeManager nodeManager, Map<UUID, Data> dataStore)
 	{
 		super(nodeId, nodeManager, dataStore);
@@ -34,6 +38,13 @@ public class SimulatedDataConsumerNode extends SimulatedNode implements DataCons
 		
 		for(BankNode bankNode : bankNodes)
 		{
+			for(CurrencyUnit currencyUnit : bankNode.getCurrencyUnits(nodeId))
+			{
+				if(currencyUnit.isValid() && currencyUnit.getOwnerId().equals(nodeId))
+				{
+					currencyMap.put(currencyUnit.getId(), currencyUnit);
+				}
+			}
 		}
 	}
 	
@@ -55,12 +66,7 @@ public class SimulatedDataConsumerNode extends SimulatedNode implements DataCons
 		DataProviderNode provider = providers.getNode();
 
 		Set<CurrencyUnit> currencyUnits = allocateCurrencyUnitsForTransaction(dataId, provider);
-		
-		for(CurrencyUnit currencyUnit : currencyUnits)
-		{
-			currencyUnit.transferTo(provider.getId());
-		}
-		
+				
 		try
 		{
 			Data encryptedData = provider.getData(getId(), dataId, currencyUnits.size());
@@ -101,18 +107,27 @@ public class SimulatedDataConsumerNode extends SimulatedNode implements DataCons
 
 	private Set<CurrencyUnit> allocateCurrencyUnitsForTransaction(UUID dataId, DataProviderNode provider)
 	{
-		// TODO: Implement this
-		Set<CurrencyUnit> currencyUnits = new HashSet<CurrencyUnit>();		
+		Set<CurrencyUnit> currencyUnits = new HashSet<CurrencyUnit>();
+		
+		List<CurrencyUnit> values = new ArrayList<CurrencyUnit>(currencyMap.values());
+		
+		if(values.size() > 0)
+		{
+			CurrencyUnit currencyUnit = values.get(0);
+			currencyUnit.transferTo(provider.getId());
+			currencyUnits.add(currencyUnit);
+			currencyMap.remove(currencyUnit.getId());
+		}
+
 		return currencyUnits;
 	}
 	
 	private void returnCurrencyUnits(Set<CurrencyUnit> currencyUnits)
 	{
-		// TODO: Implement this
-		
 		for(CurrencyUnit currencyUnit : currencyUnits)
 		{
 			currencyUnit.transferTo(getId());
+			currencyMap.put(currencyUnit.getId(), currencyUnit);
 		}
 	}
 }
