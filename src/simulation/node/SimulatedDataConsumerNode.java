@@ -58,12 +58,12 @@ public class SimulatedDataConsumerNode extends SimulatedNode implements DataCons
 		
 		for(CurrencyUnit currencyUnit : currencyUnits)
 		{
-			currencyUnit.transferTo(provider.getId());
+			currencyUnit.transferTo(provider.id());
 		}
 		
 		try
 		{
-			Data encryptedData = provider.getData(getId(), dataId, currencyUnits.size());
+			Data encryptedData = provider.getData(id(), dataId, currencyUnits.size());
 			Data encryptedDataHash = hashCodec.getHash(encryptedData);
 			
 			List<Data> decryptionKeyFragments = new ArrayList<Data>();
@@ -72,7 +72,7 @@ public class SimulatedDataConsumerNode extends SimulatedNode implements DataCons
 			Data providerToken = null; 
 			
 			Transaction transaction = new Transaction(
-				getId(), provider.getId(), providerToken, currencyUnits, encryptedDataHash);
+				id(), provider.id(), providerToken, currencyUnits, encryptedDataHash);
 			
 			NodeGroup<BrokerNode> brokers = nodeManager.getBrokerNodesForData(dataId);
 			while(brokers.hasMoreNodes())
@@ -112,7 +112,7 @@ public class SimulatedDataConsumerNode extends SimulatedNode implements DataCons
 		
 		for(CurrencyUnit currencyUnit : currencyUnits)
 		{
-			currencyUnit.transferTo(getId());
+			currencyUnit.transferTo(id());
 		}
 	}
 }

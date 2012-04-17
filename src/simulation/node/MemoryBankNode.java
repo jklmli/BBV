@@ -23,7 +23,7 @@ public class MemoryBankNode implements BankNode {
 	}
 
 	@Override
-	public UUID getId() {
+	public UUID id() {
 		return id;
 	}
 

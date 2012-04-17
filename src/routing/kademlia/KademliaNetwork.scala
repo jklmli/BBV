@@ -3,30 +3,30 @@ import java.util.UUID
 import collection.mutable.Set
 import util.Random
 
-class Network {
-  private val nodes = Set[Node]()
+class KademliaNetwork {
+  private val nodes = Set[KademliaNode]()
 
   // Default to a random node for introductions.
-  def join(introducer: Node = random(nodes)): Node = {
-    val newbie = new Node()
+  def join(introducer: KademliaNode = random(nodes)): KademliaNode = {
+    val newbie = new KademliaNode()
     newbie connect introducer
 
     this.nodes += newbie
     this.nodes
   }
 
-  def leave(member: Node): Set[Node] = {
+  def leave(member: KademliaNode): Set[KademliaNode] = {
     member.die()
 
     this.nodes -= member
     this.nodes
   }
 
-  def transfer(id: UUID, sender: Node, receiver: Node) {
+  def transfer(id: UUID, sender: KademliaNode, receiver: KademliaNode) {
     sender.send(receiver, id)
   }
 
-  def lookup(id: UUID): Node = {
+  def lookup(id: UUID): KademliaNode = {
     val matches = nodes.filter(_.id == id)
     assert(matches.size == 1)
 

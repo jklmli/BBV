@@ -1,7 +1,7 @@
 import java.util.UUID
 import util.Random
 
-object Node {
+object KademliaNode {
   // UUID hashcodes are Ints, which are 32 bits
   private final val buckets = 32
   private final val bucketDepth = 4
@@ -9,18 +9,18 @@ object Node {
   private final val threads = 3
 }
 
-class Node(val id: UUID = UUID.randomUUID()) {
+class KademliaNode(val id: UUID = UUID.randomUUID()) {
 
-  private val buckets = Seq.fill(Node.buckets)(scala.collection.mutable.Set[Node]())
+  private val buckets = Seq.fill(KademliaNode.buckets)(scala.collection.mutable.Set[KademliaNode]())
   val files = scala.collection.mutable.Set[UUID]()
 
   override def equals(that: Any): Boolean = {
-    that.isInstanceOf[Node] && that.hashCode == this.hashCode
+    that.isInstanceOf[KademliaNode] && that.hashCode == this.hashCode
   }
 
   override def hashCode = id.hashCode
 
-  def ping(node: Node): Boolean = closestNodes(node.id).exists(_ == node)
+  def ping(node: KademliaNode): Boolean = closestNodes(node.id).exists(_ == node)
 
   def store(key: UUID) {
     assert(!this.files(key))
@@ -28,19 +28,19 @@ class Node(val id: UUID = UUID.randomUUID()) {
     this.files += key
   }
 
-  def findNode(key: UUID): Node = {
-    new Node()
+  def findNode(key: UUID): KademliaNode = {
+    new KademliaNode()
   }
 
   def findFile(key: UUID): Boolean = {
     true
   }
 
-  def send(that: Node, key: UUID) {
+  def send(that: KademliaNode, key: UUID) {
     that.receive(this, key)
   }
 
-  def receive(that: Node, key: UUID) {
+  def receive(that: KademliaNode, key: UUID) {
     store(key)
   }
 
@@ -51,14 +51,14 @@ class Node(val id: UUID = UUID.randomUUID()) {
       .foreach(_ disconnect this)
   }
 
-  def connect(that: Node): Node = {
+  def connect(that: KademliaNode): KademliaNode = {
     this.link(that)
     that.link(this)
 
     this
   }
 
-  def disconnect(that: Node): Node = {
+  def disconnect(that: KademliaNode): KademliaNode = {
     this.unlink(that)
     that.unlink(this)
 
@@ -66,7 +66,7 @@ class Node(val id: UUID = UUID.randomUUID()) {
   }
 
   // Finds the _bucketDepth_ closest Nodes
-  private def closestNodes(key: UUID): Set[Node] = {
+  private def closestNodes(key: UUID): Set[KademliaNode] = {
     val closestIndices =
       buckets
         .indices
@@ -78,20 +78,20 @@ class Node(val id: UUID = UUID.randomUUID()) {
 
     closestBuckets
       .flatten(set => set)
-      .slice(0, Node.threads)
+      .slice(0, KademliaNode.threads)
       .toSet
   }
 
-  private def link(that: Node) {
+  private def link(that: KademliaNode) {
     bucketWith(that) += that
   }
 
-  private def unlink(that: Node) {
+  private def unlink(that: KademliaNode) {
     bucketWith(that) -= that
   }
 
   // Returns the bucket containing a node that exists.
-  private def bucketWith(that: Node): scala.collection.mutable.Set[Node] = {
+  private def bucketWith(that: KademliaNode): scala.collection.mutable.Set[KademliaNode] = {
     var prefix = ""
     val index = this.id.hashCode.toBinaryString
       .indexWhere(character => {

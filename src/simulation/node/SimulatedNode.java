@@ -30,7 +30,7 @@ public abstract class SimulatedNode implements Node {
 	}
 	
 	@Override
-	public UUID getId() {
+	public UUID id() {
 		return id;
 	}
 

@@ -44,7 +44,7 @@ public class SimulationNode implements Node {
 	}
 	
 	@Override
-	public UUID getId() {
+	public UUID id() {
 		return id;
 	}
 

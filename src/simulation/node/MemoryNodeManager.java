@@ -73,7 +73,7 @@ public class MemoryNodeManager implements NodeManager {
 
 	@Override
 	public void removeNode() {
-		nodes.remove(node.getId());
+		nodes.remove(node.id());
 	}
 
 	@Override
