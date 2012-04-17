@@ -4,13 +4,12 @@ import node.Node
 
 class CliqueNode extends Node {
 
-
-  def link(other: Node) {
-    connections += other
+  def link(that: Node) {
+    connections += that
   }
 
-  def unlink(other: Node) {
-    connections -= other
+  def unlink(that: Node) {
+    connections -= that
   }
 }
 
