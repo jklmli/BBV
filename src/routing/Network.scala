@@ -1,5 +1,6 @@
 package routing
 
+import data.Data
 import node.Node
 
 abstract class Network {
@@ -18,7 +19,7 @@ abstract class Network {
       .foreach(_ disconnect this)
   }
 
-  def transfer(sender: Node, receiver: Node, block: Block)
+  def transfer(sender: Node, receiver: Node, block: Data)
 
   def connect(node1: Node, node2: Node) = {
     node1.link(node2)

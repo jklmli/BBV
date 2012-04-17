@@ -1,10 +1,12 @@
 import java.util.UUID
 
+import data.Data
 import routing.Network
+
 import util.Random
 
 class Kademlia extends Network {
-  override def transfer(sender: KademliaNode, receiver: KademliaNode, block: Block) {
+  override def transfer(sender: KademliaNode, receiver: KademliaNode, block: Data) {
     sender.send(receiver, id)
   }
 
