@@ -4,7 +4,7 @@ import node.Node
 import routing.Network
 
 class DirectNetwork extends Network {
-  def transfer(sender: Node, receiver: Node, block: Block) {
+  override def transfer(sender: Node, receiver: Node, block: Block) {
     receiver.share(block)
   }
 
