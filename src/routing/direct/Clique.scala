@@ -3,7 +3,7 @@ package routing.direct
 import node.Node
 import routing.Network
 
-class DirectNetwork extends Network {
+class Clique extends Network {
   override def transfer(sender: Node, receiver: Node, block: Block) {
     receiver.share(block)
   }

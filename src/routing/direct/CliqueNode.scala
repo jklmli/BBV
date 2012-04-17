@@ -2,7 +2,7 @@ package routing.direct
 
 import node.Node
 
-class DirectNode extends Node {
+class CliqueNode extends Node {
 
 
   def link(other: Node) {
