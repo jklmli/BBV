@@ -67,15 +67,16 @@ public interface BrokerNode extends Node {
 	}
 
 	/**
-	 * Register a transaction.  This method is called by both the data provider
-	 * and consumer
+	 * Register a transaction.  This method is called by data providers before
+	 * data is provided.
 	 */
 	public void registerTransaction(Transaction transaction);
 
 	/**
 	 * Verify that the encrypted data hash matches the expected value. If the
 	 * hash matches forward a share of the payment authorization to the data 
-	 * provider and return the decryption key to the consumer.
+	 * provider and return the decryption key to the consumer.  This method is
+	 * called by data consumers after data is received. 
 	 */
 	public DecryptionKeySecretShare finalizeTransaction(
 		UUID transactionId, Collection<CurrencyUnit> payment, Data encryptedDataHash);	
