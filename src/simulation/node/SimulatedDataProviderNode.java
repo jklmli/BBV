@@ -1,9 +1,13 @@
 package simulation.node;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import node.BrokerNode.Transaction;
+import node.NodeManager.NodeGroup;
+import node.BrokerNode;
 import node.DataProviderNode;
 import node.NodeManager;
 import data.Data;
@@ -15,10 +19,34 @@ public class SimulatedDataProviderNode extends SimulatedNode implements DataProv
 		super(nodeId, nodeManager, dataStore);
 	}
 	
+	public Transaction requestData(UUID consumerId, UUID dataId, int paymentAmount)
+	{
+		// Select brokers
+		Map<UUID, BrokerNode> brokerMap = new HashMap<UUID, BrokerNode>();
+		NodeGroup<BrokerNode> brokers = nodeManager.getBrokerNodesForData(dataId);
+		while(brokers.hasMoreNodes())
+		{
+			for(BrokerNode broker : brokers.getNodes())
+			{
+				brokerMap.put(broker.getId(), broker);
+			}
+		}
+		
+		Transaction transaction = new Transaction(
+			consumerId, getId(), dataId, paymentAmount, brokerMap.keySet());
+
+		// Register transaction with brokers
+		for(BrokerNode broker : brokerMap.values())
+		{
+			broker.registerTransaction(transaction);
+		}
+
+		return transaction;
+	}
+	
 	@Override
-	public Data getData(UUID consumerNodeId, UUID dataId,
-			int currencyUnitsOffered) {
-		return dataStore.get(dataId);
+	public Data getData(Transaction transaction) {
+		return dataStore.get(transaction.getDataId());
 	}
 
 	@Override
@@ -42,5 +70,10 @@ public class SimulatedDataProviderNode extends SimulatedNode implements DataProv
 	{
 		Data data = dataStore.get(dataId);
 		return hashCodec.getHash(data);
+	}
+
+	@Override
+	public void addCurrencyTransferAuthorizationFragment(
+			Data currencyTransferFragment) {
 	}
 }

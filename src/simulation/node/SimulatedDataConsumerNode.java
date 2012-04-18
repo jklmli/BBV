@@ -65,27 +65,28 @@ public class SimulatedDataConsumerNode extends SimulatedNode implements DataCons
 
 		DataProviderNode provider = providers.getNode();
 
-		Set<CurrencyUnit> currencyUnits = allocateCurrencyUnitsForTransaction(dataId, provider);
+		Set<CurrencyUnit> payment = allocateCurrencyUnitsForTransaction(dataId, provider);
 				
 		try
-		{
-			Data encryptedData = provider.getData(getId(), dataId, currencyUnits.size());
+		{			
+			Transaction transaction = provider.requestData(getId(), dataId, payment.size());
+			
+			Data encryptedData = provider.getData(transaction);
 			Data encryptedDataHash = hashCodec.getHash(encryptedData);
 			
 			List<Data> decryptionKeyFragments = new ArrayList<Data>();
 			
-			// TODO: get provider token
-			Data providerToken = null; 
 			
-			Transaction transaction = new Transaction(
-				getId(), provider.getId(), providerToken, currencyUnits, encryptedDataHash);
+			NodeGroup<BrokerNode> brokers = nodeManager.getBrokerNodes(
+				transaction.getBrokerNodeIds());
 			
-			NodeGroup<BrokerNode> brokers = nodeManager.getBrokerNodesForData(dataId);
 			while(brokers.hasMoreNodes())
 			{
 				for(BrokerNode broker : brokers.getNodes())
 				{
-					Data decryptionKeyFragment = broker.finalizeTransaction(transaction);
+					Data decryptionKeyFragment = broker.finalizeTransaction(
+						transaction.getId(), payment, encryptedDataHash);
+					
 					decryptionKeyFragments.add(decryptionKeyFragment);
 				}
 			}
@@ -100,7 +101,7 @@ public class SimulatedDataConsumerNode extends SimulatedNode implements DataCons
 			return decryptedData;
 		} catch(Throwable e)
 		{
-			returnCurrencyUnits(currencyUnits);
+			returnCurrencyUnits(payment);
 			return null;
 		}
 	}

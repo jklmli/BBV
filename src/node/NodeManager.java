@@ -1,6 +1,7 @@
 package node;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -89,5 +90,7 @@ public interface NodeManager {
 	 * Returns a group of broker nodes for the data with the given id
 	 */
 	NodeGroup<BrokerNode> getBrokerNodesForData(UUID dataId);
+	
+	NodeGroup<BrokerNode> getBrokerNodes(Set<UUID> brokerNodeIds);
 
 }

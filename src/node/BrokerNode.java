@@ -1,5 +1,6 @@
 package node;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
 
@@ -9,22 +10,31 @@ public interface BrokerNode extends Node {
 
 	public static class Transaction
 	{
+		private UUID id;
 		private UUID consumerId;
 		private UUID providerId;
+		private UUID dataId;
+		private int paymentAmount;
+		private Set<UUID> brokerNodeIds;
 		
-		private Data providerToken;
-		private Set<CurrencyUnit> payment;
-		private Data encryptedDataHash;
-		
-		public Transaction(UUID consumerId, UUID providerId,
-				Data providerToken, Set<CurrencyUnit> payment,
-				Data encryptedDataHash) {
+		public Transaction(
+				UUID consumerId, 
+				UUID providerId, 
+				UUID dataId, 
+				int paymentAmount, 
+				Set<UUID> brokerNodeIds) {
 			super();
+			this.id = UUID.randomUUID();
 			this.consumerId = consumerId;
 			this.providerId = providerId;
-			this.providerToken = providerToken;
-			this.payment = payment;
-			this.encryptedDataHash = encryptedDataHash;
+			this.dataId = dataId;
+			this.paymentAmount = paymentAmount;
+			this.brokerNodeIds = brokerNodeIds;
+		}
+		
+		public UUID getId()
+		{
+			return id;
 		}
 		
 		public UUID getConsumerId() {
@@ -35,39 +45,19 @@ public interface BrokerNode extends Node {
 			return providerId;
 		}
 
-		public Data getProviderToken() {
-			return providerToken;
+		public UUID getDataId() {
+			return dataId;
 		}
 
-		public Set<CurrencyUnit> getPayment() {
-			return payment;
+		public int getPaymentAmount() {
+			return paymentAmount;
 		}
-
-		public Data getEncryptedDataHash() {
-			return encryptedDataHash;
-		}		
-	}
-	
-	public static class DataProviderToken
-	{
-		private UUID providerId;
-		private int expectedPaymentAmount;
-
-		public DataProviderToken(UUID providerId, int expectedPaymentAmount) {
-			super();
-			this.providerId = providerId;
-			this.expectedPaymentAmount = expectedPaymentAmount;
-		}
-
-		public UUID getProviderId() {
-			return providerId;
-		}
-
-		public int getExpectedPaymentAmount() {
-			return expectedPaymentAmount;
+		
+		public Set<UUID> getBrokerNodeIds()
+		{
+			return brokerNodeIds;
 		}
 	}
-	
 	
 	public static class DecryptionKeySecretShare extends Data
 	{
@@ -75,22 +65,18 @@ public interface BrokerNode extends Node {
 			super(data);
 		}
 	}
-	
-	// Decode data provider token
-	
-	// Verify that the data in the provider token matches the transaction 
-	// information provided by the consumer
-	
-	
-	// Verify that the encrypted data hash matches the expected value
-	
-	
-	// For each bank node
-	
-	// --- Submit the payment information to the bank node
-	
-	// Send 
-	// Return the data decryption key
-	
-	public DecryptionKeySecretShare finalizeTransaction(Transaction transaction);	
+
+	/**
+	 * Register a transaction.  This method is called by both the data provider
+	 * and consumer
+	 */
+	public void registerTransaction(Transaction transaction);
+
+	/**
+	 * Verify that the encrypted data hash matches the expected value. If the
+	 * hash matches forward a share of the payment authorization to the data 
+	 * provider and return the decryption key to the consumer.
+	 */
+	public DecryptionKeySecretShare finalizeTransaction(
+		UUID transactionId, Collection<CurrencyUnit> payment, Data encryptedDataHash);	
 }
