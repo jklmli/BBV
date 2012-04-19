@@ -6,10 +6,10 @@ import main.scala.data.Data
 import main.scala.routing.Network
 
 import util.Random
-import main.scala.node.Consumer
+import main.scala.node.{Producer, Consumer}
 
 class Kademlia extends Network[KademliaNode] {
-  override def transfer(sender: KademliaNode with Consumer,
+  override def transfer(sender: KademliaNode with Producer,
                         receiver: KademliaNode with Consumer, file: Data) {
     sender.send(receiver, file)
   }
