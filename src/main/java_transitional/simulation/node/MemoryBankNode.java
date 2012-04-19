@@ -74,4 +74,17 @@ public class MemoryBankNode implements BankNode {
 
 		return currencyUnits;
 	}
+
+	@Override
+	public List<CurrencyUnit> getCurrencyUnits(UUID nodeId) {
+		List<CurrencyUnit> currencyUnits = new ArrayList<CurrencyUnit>();
+		
+		CurrencyMap currencyMap = nodeCurrencyMap.get(nodeId);
+		if(currencyMap != null)
+		{
+			currencyUnits.addAll(currencyMap.values());
+		}
+		
+		return currencyUnits;
+	}
 }

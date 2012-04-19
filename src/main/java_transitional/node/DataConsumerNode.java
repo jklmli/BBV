@@ -13,5 +13,4 @@ public interface DataConsumerNode extends Node {
 	public Data getData(UUID dataId);
 
 	public Data getData(UUID dataId, DataImportance importance);
-
 }

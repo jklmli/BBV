@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import node.BankNode;
@@ -120,6 +121,11 @@ public class MemoryNodeManager implements NodeManager {
 
 	@Override
 	public NodeGroup<BrokerNode> getBrokerNodesForData(UUID dataId) {
+		return null;
+	}
+
+	@Override
+	public NodeGroup<BrokerNode> getBrokerNodes(Set<UUID> brokerNodeIds) {
 		return null;
 	}
 }
