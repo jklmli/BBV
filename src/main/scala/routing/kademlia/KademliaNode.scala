@@ -1,6 +1,7 @@
-import main.scala.node.Node
-
 import java.util.UUID
+
+import main.scala.node.Node
+import main.scala.data.Data
 
 object KademliaNode extends Node {
   // UUID hashcodes are Ints, which are 32 bits
@@ -34,12 +35,12 @@ class KademliaNode extends Node[KademliaNode] {
     true
   }
 
-  def send(that: KademliaNode, key: UUID) {
-    that.receive(this, key)
+  def send(that: KademliaNode, file: Data) {
+    // TODO: unimplemented
   }
 
-  def receive(that: KademliaNode, key: UUID) {
-    store(key)
+  def receive(that: KademliaNode, file: Data) {
+    // TODO: unimplemented
   }
 
   // Finds the _bucketDepth_ closest Nodes
