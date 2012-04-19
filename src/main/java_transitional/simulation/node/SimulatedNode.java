@@ -3,9 +3,9 @@ package simulation.node;
 import java.util.Map;
 import java.util.UUID;
 
-import node.Node;
+import main.scala.node.Node;
 import node.NodeManager;
-import data.Data;
+import main.scala.data.Data;
 import data.HashCodec;
 import data.SharedSecretCodec;
 import data.SymmetricEncryptionCodec;

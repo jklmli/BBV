@@ -9,7 +9,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 import simulation.node.MemoryNodeManager;
-import data.Data;
+import main.scala.data.Data;
 public class Simulation {
 
 	public static class Parameters

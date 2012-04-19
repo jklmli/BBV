@@ -1,6 +1,6 @@
-package data
+package main.scala.data
 
-class Data (val bytes: Array[Byte]) {
+class Data(val bytes: Array[Byte]) {
   override def equals(that: Any): Boolean = {
     that.isInstanceOf[Data] && that.hashCode == this.hashCode
   }

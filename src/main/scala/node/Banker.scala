@@ -1,4 +1,6 @@
-package node
+package main.scala.node
+
+import node.CurrencyUnit
 
 trait Banker {
   val bank = scala.collection.mutable.Set[CurrencyUnit]()

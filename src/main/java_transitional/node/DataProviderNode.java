@@ -2,7 +2,7 @@ package node;
 
 import java.util.UUID;
 
-import data.Data;
+import main.scala.data.Data;
 
 public interface DataProviderNode extends Node {
 

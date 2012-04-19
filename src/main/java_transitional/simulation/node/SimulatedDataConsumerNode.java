@@ -16,7 +16,7 @@ import node.DataProviderNode;
 import node.NodeManager;
 import node.NodeManager.NodeGroup;
 import simulation.Simulation;
-import data.Data;
+import main.scala.data.Data;
 
 public class SimulatedDataConsumerNode extends SimulatedNode implements DataConsumerNode {
 

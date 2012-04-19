@@ -1,5 +1,6 @@
-package node
+package main.scala.node
 
+import main.scala.data.Data
 import data.Data
 
 import java.util.UUID
@@ -15,15 +16,16 @@ abstract class Node[T <: Node[T]](val id: UUID = UUID.randomUUID()) {
   override def hashCode = id.hashCode
 
   def link(that: T)
+
   def unlink(that: T)
 
   def store(block: Data) {
-    assert !(files contains block)
+    assert ! (files contains block)
     files += block
   }
 
   def unstore(block: Data) {
-    assert (files contains block)
+    assert(files contains block)
     files -= block
   }
 }

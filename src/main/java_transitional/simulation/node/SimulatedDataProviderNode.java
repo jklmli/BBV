@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import node.DataProviderNode;
 import node.NodeManager;
-import data.Data;
+import main.scala.data.Data;
 
 public class SimulatedDataProviderNode extends SimulatedNode implements DataProviderNode {
 	

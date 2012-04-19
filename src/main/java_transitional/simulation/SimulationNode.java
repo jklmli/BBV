@@ -10,12 +10,12 @@ import node.BankNode;
 import node.BrokerNode;
 import node.DataConsumerNode;
 import node.DataProviderNode;
-import node.Node;
+import main.scala.node.Node;
 import node.NodeManager;
 import simulation.node.MemoryNodeManager;
 import simulation.node.SimulatedDataConsumerNode;
 import simulation.node.SimulatedDataProviderNode;
-import data.Data;
+import main.scala.data.Data;
 
 public class SimulationNode implements Node {
 

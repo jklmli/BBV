@@ -3,7 +3,7 @@ package node;
 import java.util.Set;
 import java.util.UUID;
 
-import data.Data;
+import main.scala.data.Data;
 
 public interface BrokerNode extends Node {
 

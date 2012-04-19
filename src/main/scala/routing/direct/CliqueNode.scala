@@ -1,5 +1,6 @@
 package routing.direct
 
+import main.scala.node.Node
 import node.Node
 
 class CliqueNode extends Node[CliqueNode] {

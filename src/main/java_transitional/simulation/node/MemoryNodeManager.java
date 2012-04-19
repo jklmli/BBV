@@ -9,7 +9,7 @@ import java.util.UUID;
 import node.BankNode;
 import node.BrokerNode;
 import node.DataProviderNode;
-import node.Node;
+import main.scala.node.Node;
 import node.NodeManager;
 import simulation.SimulationNode;
 
