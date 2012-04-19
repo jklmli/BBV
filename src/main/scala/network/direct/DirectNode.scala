@@ -12,7 +12,7 @@ class DirectNode extends Node[DirectNode] {
   }
 
   override def unlink(that: DirectNode) {
-    super.link(that)
+    super.unlink(that)
     links -= that
   }
 }

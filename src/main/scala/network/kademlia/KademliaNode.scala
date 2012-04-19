@@ -19,10 +19,12 @@ class KademliaNode extends Node[KademliaNode] {
   override def connections = this.buckets.flatten(set => set).toSet
 
   override def link(that: KademliaNode) {
+    super.link(that)
     bucketWith(that) += that
   }
 
   override def unlink(that: KademliaNode) {
+    super.unlink(that)
     bucketWith(that) -= that
   }
 
