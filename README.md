@@ -3,7 +3,7 @@
 ###Linux
 
 #### Source files - cleaning, compiling, etc.
-This project uses sbt, refer to [this](https://github.com/harrah/xsbt/wiki/Getting-Started-Running).
+This project uses `sbt` (Scala Build Tool), refer to [this](https://github.com/harrah/xsbt/wiki/Getting-Started-Running).
 
 #### Generating docs/paper
 You'll need `pdflatex` and `bibtex` packages.  Afterwards, run `make doc` from the root of the repo.
