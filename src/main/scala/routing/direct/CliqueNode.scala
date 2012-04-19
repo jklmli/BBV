@@ -3,7 +3,7 @@ package routing.direct
 import main.scala.node.Node
 
 class CliqueNode extends Node[CliqueNode] {
-  override val connections = scala.collection.mutable.Set[Node]()
+  override val connections = scala.collection.mutable.Set[CliqueNode]()
 
   override def link(that: CliqueNode) {
     connections += that
