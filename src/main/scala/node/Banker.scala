@@ -1,23 +1,21 @@
 package main.scala.node
 
-import node.CurrencyUnit
+import java.util.UUID
+
+import main.scala.Coin
 
 trait Banker {
-  val bank = scala.collection.mutable.Set[CurrencyUnit]()
+  val bank = scala.collection.mutable.Set[Coin]()
 
-  def add(currencyUnits: Traversable[CurrencyUnit]) {
-    currencyUnits.foreach(currencyUnit => {
-      assert(!(bank contains currencyUnit))
-      bank += currencyUnit
-    })
+  def deposit(coin: Coin) {
+    assert(!(bank contains coin))
+    bank += coin
   }
 
-  def remove(currencyUnits: Traversable[CurrencyUnit]) {
-    currencyUnits.foreach(currencyUnit => {
-      assert(bank contains currencyUnit)
-      bank -= currencyUnit
-    })
+  def withdraw(coin: Coin) {
+    assert(bank contains coin)
+    bank -= coin
   }
 
-  def getCurrencyUnits(nodeId: UUID, ids: Traversable[UUID]): Traversable[CurrencyUnit]
+  def getCurrencyUnits(nodeId: UUID, ids: Traversable[UUID]): Traversable[Coin]
 }
