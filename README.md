@@ -8,3 +8,7 @@ This project uses `sbt` (Scala Build Tool), refer to [this](https://github.com/h
 #### Generating docs/paper
 You'll need `pdflatex` and `bibtex` packages.  Afterwards, run `make doc` from the root of the repo.
 The PDF will show up in `doc/out/`, assuming there are no errors.
+
+## Simulating
+
+Open `sbt`, type `run <simulation name>`.
