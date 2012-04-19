@@ -2,15 +2,18 @@ package main.scala
 
 import java.util.UUID
 
-class Coin {
-  val id: UUID = null
-  var owner: UUID = null
+import main.scala.node.Node
 
-  def transferTo(ownerId: UUID) {
-    this.owner = ownerId
-  }
+class Coin (val minter: Node[_]) {
+  val id = UUID.randomUUID()
 
   def isValid: Boolean = {
     true
   }
+
+  override def equals(that: Any): Boolean = {
+    that.isInstanceOf[Coin] && that.hashCode == this.hashCode
+  }
+
+  override def hashCode: Int = id.hashCode
 }
