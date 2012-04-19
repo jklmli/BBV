@@ -8,6 +8,7 @@ class Coin (val minter: Node[_]) {
   val id = UUID.randomUUID()
 
   def isValid: Boolean = {
+    // TODO: ???
     true
   }
 
