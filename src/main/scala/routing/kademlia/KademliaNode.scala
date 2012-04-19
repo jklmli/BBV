@@ -7,10 +7,10 @@ import main.scala.data.Data
 
 object KademliaNode {
   // UUID hashcodes are Ints, which are 32 bits
-  private final val buckets = 32
-  private final val bucketDepth = 4
+  private val buckets = 32
+  private val bucketDepth = 4
 
-  private final val threads = 3
+  private val threads = 3
 }
 
 class KademliaNode extends Node[KademliaNode] {
