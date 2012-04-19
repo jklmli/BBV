@@ -16,7 +16,7 @@ object KademliaNode {
 class KademliaNode extends Node[KademliaNode] {
 
   private val buckets = Seq.fill(KademliaNode.buckets)(scala.collection.mutable.Set[KademliaNode]())
-  override def connections = this.buckets.flatten(set => set).asInstanceOf[scala.collection.mutable.Set[KademliaNode]]
+  override def connections = this.buckets.flatten(set => set).toSet
 
   override def link(that: KademliaNode) {
     bucketWith(that) += that
