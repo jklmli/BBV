@@ -1,7 +1,7 @@
 package main.scala.routing
 
 import main.scala.data.Data
-import main.scala.node.Node
+import main.scala.node.{Consumer, Node}
 
 abstract class Network[T <: Node[T]] {
   val nodes = scala.collection.mutable.Set[T]()
@@ -18,7 +18,7 @@ abstract class Network[T <: Node[T]] {
     member.connections foreach(disconnect(_, member))
   }
 
-  def transfer(sender: T, receiver: T, block: Data)
+  def transfer(sender: T with Consumer, receiver: T with Consumer, block: Data)
 
   def connect(node1: T, node2: T) = {
     node1 link node2

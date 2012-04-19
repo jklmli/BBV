@@ -6,9 +6,11 @@ import main.scala.data.Data
 import main.scala.routing.Network
 
 import util.Random
+import main.scala.node.Consumer
 
 class Kademlia extends Network[KademliaNode] {
-  override def transfer(sender: KademliaNode, receiver: KademliaNode, file: Data) {
+  override def transfer(sender: KademliaNode with Consumer,
+                        receiver: KademliaNode with Consumer, file: Data) {
     sender.send(receiver, file)
   }
 
@@ -22,13 +24,7 @@ class Kademlia extends Network[KademliaNode] {
   // Simulates two random nodes transferring a random key.
   // Helpful for distributing keys throughout the system.
   def gossip() {
-    assert(nodes.size >= 2)
-
-    val sender = random(nodes)
-    val receiver = random(nodes - sender)
-    val file = random(sender.files)
-
-    transfer(sender, receiver, file)
+    // TODO: need to rewrite (filter by traits)
   }
 
   private def select[A](iter: Iterable[A], index: Int): A =
