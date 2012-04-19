@@ -1,9 +1,9 @@
-package main.scala.routing.kademlia
+package main.scala.network.kademlia
 
 import java.util.UUID
 
 import main.scala.data.Data
-import main.scala.routing.Network
+import main.scala.network.Network
 
 import util.Random
 import main.scala.node.{Producer, Consumer}

@@ -1,7 +1,7 @@
-package main.scala.routing.clique
+package main.scala.network.clique
 
 import main.scala.data.Data
-import main.scala.routing.Network
+import main.scala.network.Network
 import main.scala.node.{Producer, Consumer}
 
 class Clique extends Network[CliqueNode] {

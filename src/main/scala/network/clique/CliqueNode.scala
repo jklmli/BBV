@@ -1,4 +1,4 @@
-package main.scala.routing.clique
+package main.scala.network.clique
 
 import main.scala.node.Node
 

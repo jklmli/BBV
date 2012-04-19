@@ -1,4 +1,4 @@
-package main.scala.routing.kademlia
+package main.scala.network.kademlia
 
 import java.util.UUID
 
