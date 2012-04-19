@@ -1,5 +1,4 @@
 import main.scala.node.Node
-import node.Node
 
 import java.util.UUID
 

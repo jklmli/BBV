@@ -1,9 +1,7 @@
 package routing
 
 import main.scala.data.Data
-import data.Data
 import main.scala.node.Node
-import node.Node
 
 abstract class Network {
   val nodes = scala.collection.mutable.Set[Node]()

@@ -1,7 +1,6 @@
 import java.util.UUID
 
 import main.scala.data.Data
-import data.Data
 import routing.Network
 
 import util.Random

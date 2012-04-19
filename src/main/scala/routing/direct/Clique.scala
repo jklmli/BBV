@@ -1,7 +1,6 @@
 package routing.direct
 
 import main.scala.data.Data
-import data.Data
 import routing.Network
 
 class Clique extends Network {
