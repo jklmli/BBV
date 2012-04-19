@@ -5,11 +5,11 @@ import main.scala.data.Data
 import java.util.UUID
 
 abstract class Node[T <: Node[T]](val id: UUID = UUID.randomUUID()) {
-  val connections: scala.collection.mutable.Set[Node]
+  val connections: scala.collection.mutable.Set[Node[T]]
   val files = scala.collection.mutable.Set[Data]()
 
   override def equals(that: Any): Boolean = {
-    that.isInstanceOf[Node] && that.hashCode == this.hashCode
+    that.isInstanceOf[Node[T]] && that.hashCode == this.hashCode
   }
 
   override def hashCode = id.hashCode
@@ -18,14 +18,14 @@ abstract class Node[T <: Node[T]](val id: UUID = UUID.randomUUID()) {
 
   def unlink(that: T)
 
-  def store(block: Data) {
-    assert (!(files contains block))
-    files += block
+  def store(file: Data) {
+    assert (!(files contains file))
+    files += file
   }
 
-  def unstore(block: Data) {
-    assert(files contains block)
-    files -= block
+  def unstore(file: Data) {
+    assert(files contains file)
+    files -= file
   }
 }
 
