@@ -1,7 +1,6 @@
 package main.scala.node
 
 import main.scala.data.Data
-import data.Data
 
 import java.util.UUID
 
