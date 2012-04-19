@@ -1,7 +1,9 @@
+package main.scala.routing.kademlia
+
 import java.util.UUID
 
 import main.scala.data.Data
-import routing.Network
+import main.scala.routing.Network
 
 import util.Random
 

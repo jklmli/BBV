@@ -1,8 +1,8 @@
 package main.scala.node
 
-import main.scala.data.Data
-
 import java.util.UUID
+
+import main.scala.data.Data
 
 abstract class Node[T <: Node[T]](val id: UUID = UUID.randomUUID()) {
   def connections: scala.collection.mutable.Set[T]

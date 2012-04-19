@@ -1,4 +1,4 @@
-package routing
+package main.scala.routing
 
 import main.scala.data.Data
 import main.scala.node.Node
