@@ -6,8 +6,8 @@ import routing.Network
 import util.Random
 
 class Kademlia extends Network {
-  override def transfer(sender: KademliaNode, receiver: KademliaNode, block: Data) {
-    sender.send(receiver, id)
+  override def transfer(sender: KademliaNode, receiver: KademliaNode, file: Data) {
+    sender.send(receiver, file)
   }
 
   def lookup(id: UUID): KademliaNode = {

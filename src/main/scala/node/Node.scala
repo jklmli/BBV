@@ -19,7 +19,7 @@ abstract class Node[T <: Node[T]](val id: UUID = UUID.randomUUID()) {
   def unlink(that: T)
 
   def store(block: Data) {
-    assert ! (files contains block)
+    assert (!(files contains block))
     files += block
   }
 

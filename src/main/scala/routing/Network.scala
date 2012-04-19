@@ -8,7 +8,7 @@ abstract class Network {
   def size: nodes.size
 
   def join(newbie: Node) = {
-    assert !(nodes contains newbie)
+    assert (!(nodes contains newbie))
     nodes += newbie
   }
   def leave(member: Node) = {
