@@ -7,4 +7,4 @@ This project uses sbt, refer to [this](https://github.com/harrah/xsbt/wiki/Getti
 
 #### Generating docs/paper
 You'll need `pdflatex` and `bibtex` packages.  Afterwards, run `make doc` from the root of the repo.
-The PDF will show up in the doc/ directory, assuming there are no errors.
+The PDF will show up in `doc/out/`, assuming there are no errors.
