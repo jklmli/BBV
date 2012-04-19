@@ -3,7 +3,7 @@ import java.util.UUID
 import main.scala.node.Node
 import main.scala.data.Data
 
-object KademliaNode extends Node {
+object KademliaNode {
   // UUID hashcodes are Ints, which are 32 bits
   private final val buckets = 32
   private final val bucketDepth = 4
@@ -14,7 +14,7 @@ object KademliaNode extends Node {
 class KademliaNode extends Node[KademliaNode] {
 
   private val buckets = Seq.fill(KademliaNode.buckets)(scala.collection.mutable.Set[KademliaNode]())
-  override def connections = this.buckets.flatten(set => set)
+  override def connections = this.buckets.flatten(set => set).asInstanceOf[scala.collection.mutable.Set[KademliaNode]]
 
   override def link(that: KademliaNode) {
     bucketWith(that) += that

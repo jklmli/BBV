@@ -5,7 +5,7 @@ import routing.Network
 
 import util.Random
 
-class Kademlia extends Network {
+class Kademlia extends Network[KademliaNode] {
   override def transfer(sender: KademliaNode, receiver: KademliaNode, file: Data) {
     sender.send(receiver, file)
   }
@@ -26,7 +26,7 @@ class Kademlia extends Network {
     val receiver = random(nodes - sender)
     val file = random(sender.files)
 
-    transfer(file, sender, receiver)
+    transfer(sender, receiver, file)
   }
 
   private def select[A](iter: Iterable[A], index: Int): A =

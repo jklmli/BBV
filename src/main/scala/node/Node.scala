@@ -5,7 +5,7 @@ import main.scala.data.Data
 import java.util.UUID
 
 abstract class Node[T <: Node[T]](val id: UUID = UUID.randomUUID()) {
-  val connections: scala.collection.mutable.Set[T]
+  def connections: scala.collection.mutable.Set[T]
   val files = scala.collection.mutable.Set[Data]()
 
   override def equals(that: Any): Boolean = {
