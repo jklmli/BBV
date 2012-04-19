@@ -26,12 +26,12 @@ object Square extends App {
 
   c.store(file1)
 
+  assert(a.files.size == 0)
   n.transfer(c, a, file1)
+  assert(a.files.size == 1)
 
   // Compile-time error!
   // n.transfer(a, b, file1)
-
-  println(n.size)
 }
 
 
