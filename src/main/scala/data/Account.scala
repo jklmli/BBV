@@ -4,7 +4,7 @@ class Account {
   val balance = scala.collection.mutable.Set[Coin]()
 
   def deposit(coins: Traversable[Coin]) {
-    coins foreach ({
+    coins foreach (coin => {
       assert(!(balance contains coin))
       balance += coin
     })

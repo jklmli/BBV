@@ -2,16 +2,17 @@ package main.scala.network.kademlia
 
 import java.util.UUID
 
-import main.scala.data.Data
 import main.scala.network.Network
 
 import util.Random
-import main.scala.node.{Producer, Consumer}
+import main.scala.node.{Node, Producer, Consumer}
 
 class Kademlia extends Network[KademliaNode] {
-  override def transfer(sender: KademliaNode with Producer,
-                        receiver: KademliaNode with Consumer, file: Data) {
-    sender.send(receiver, file)
+  override def route(sender: KademliaNode with Producer,
+                     receiver: KademliaNode with Consumer):
+                     Traversable[KademliaNode] = {
+    // TODO: do actual routing!
+    None
   }
 
   def lookup(id: UUID): KademliaNode = {

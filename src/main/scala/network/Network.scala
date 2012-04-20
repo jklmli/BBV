@@ -18,7 +18,23 @@ abstract class Network[T <: Node[T]] {
     member.connections foreach(disconnect(_, member))
   }
 
-  def transfer(sender: T with Producer, receiver: T with Consumer, block: Data)
+  def route(sender: T with Producer, receiver: T with Consumer): Traversable[T]
+
+  def transfer(sender: T with Producer, receiver: T with Consumer, file: Data) {
+    val path = route(sender, receiver)
+
+    if (!path.isEmpty) {
+      sender send file
+
+      val nextHop = route(sender, receiver).tail.head
+
+      nextHop.asInstanceOf[T with Consumer] receive file
+
+      if (nextHop != receiver) {
+        transfer(nextHop.asInstanceOf[T with Producer], receiver, file)
+      }
+    }
+  }
 
   def connect(node1: T, node2: T) {
     node1 link node2
