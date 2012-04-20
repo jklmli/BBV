@@ -1,17 +1,15 @@
 package main.scala.network.kademlia
 
 import java.util.UUID
+import util.Random
 
 import main.scala.network.Network
+import main.scala.node.{Producer, Consumer}
 
-import util.Random
-import main.scala.node.{Node, Producer, Consumer}
 
 class Kademlia extends Network[KademliaNode] {
-  override def route(sender: KademliaNode with Producer,
-                     receiver: KademliaNode with Consumer):
-                     Traversable[KademliaNode] = {
-    // TODO: do actual routing!
+  def hops(from: KademliaNode, to: KademliaNode):
+    Traversable[KademliaNode with Producer with Consumer] = {
     None
   }
 

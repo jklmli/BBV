@@ -1,13 +1,11 @@
 package main.scala.network.direct
 
 import main.scala.network.Network
-import main.scala.node.{Node, Producer, Consumer}
+import main.scala.node.{Producer, Consumer}
 
 class Direct extends Network[DirectNode] {
-  override def route(sender: DirectNode with Producer,
-                     receiver: DirectNode with Consumer) = {
-    if (sender.connections contains receiver){
-      List(sender, receiver)
-    } else None
+  def hops(from: DirectNode, to: DirectNode):
+    Traversable[DirectNode with Producer with Consumer] = {
+    if (from.connections contains to) List() else None
   }
 }

@@ -18,21 +18,30 @@ abstract class Network[T <: Node[T]] {
     member.connections foreach(disconnect(_, member))
   }
 
-  def route(sender: T with Producer, receiver: T with Consumer): Traversable[T]
+  def hops(from: T, to: T): Traversable[T with Producer with Consumer]
+
+  def route(sender: T with Producer, receiver: T with Consumer): Traversable[T] = {
+    if (hops(sender, receiver) == None)
+      None
+    else
+      sender :: hops(sender, receiver).toList ::: List(receiver)
+  }
 
   def transfer(sender: T with Producer, receiver: T with Consumer, file: Data) {
     val path = route(sender, receiver)
 
-    if (!path.isEmpty) {
+    if (path != None) {
       sender send file
 
-      val nextHop = route(sender, receiver).tail.head
-
-      nextHop.asInstanceOf[T with Consumer] receive file
+      val nextHop = hops(sender, receiver).head
+      nextHop receive file
 
       if (nextHop != receiver) {
-        transfer(nextHop.asInstanceOf[T with Producer], receiver, file)
+        transfer(nextHop, receiver, file)
       }
+    }
+    else {
+      // TODO: notify Logger?
     }
   }
 
