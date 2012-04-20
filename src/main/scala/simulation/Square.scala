@@ -8,9 +8,11 @@ object Square extends App {
   val n = new Direct
 
   // Leechers
-  val Seq(a, b) = Seq.fill(2)(new DirectNode with Consumer)
+  val a = new DirectNode with Consumer
+  val b = new DirectNode with Consumer
   // Seeders
-  val Seq(c, d) = Seq.fill(2)(new DirectNode with Producer)
+  val c = new DirectNode with Producer
+  val d = new DirectNode with Producer
 
   n.join(a)
   n.join(b)
