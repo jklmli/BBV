@@ -1,21 +1,24 @@
 package main.scala.node
 
-import java.util.UUID
-
-import main.scala.Coin
+import main.scala.data.Account
 
 trait Banker {
-  val bank = scala.collection.mutable.Set[Coin]()
+  val bank = scala.collection.mutable.Map[Node, Account]()
 
-  def deposit(coin: Coin) {
-    assert(!(bank contains coin))
-    bank += coin
+  def account(node: Node): Account = {
+    if (!(bank.keys contains node)) {
+      bank(node) = new Account
+    }
+    bank(node)
   }
 
-  def withdraw(coin: Coin) {
-    assert(bank contains coin)
-    bank -= coin
+  def openAccount(node: Node) {
+    assert(!(bank.keys contains node))
+    bank(node) = new Account
   }
 
-  def getCurrencyUnits(nodeId: UUID, ids: Traversable[UUID]): Traversable[Coin]
+  def closeAccount(node: Node) {
+    assert(bank.keys contains node)
+    bank -= node
+  }
 }

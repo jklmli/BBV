@@ -1,10 +1,10 @@
-package main.scala
+package main.scala.data
 
 import java.util.UUID
 
 import main.scala.node.Node
 
-class Coin (val minter: Node[_]) {
+class Coin(val minter: Node[_]) {
   val id = UUID.randomUUID()
 
   def isValid: Boolean = {
