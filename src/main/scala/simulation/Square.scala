@@ -2,17 +2,17 @@ package main.scala.simulation
 
 import main.scala.node.{Consumer, Producer}
 import main.scala.data.Data
-import main.scala.network.{Network, DirectNode}
+import main.scala.network.{Network, NaiveNode}
 
 object Square extends App {
-  val n = new Network[DirectNode]
+  val n = new Network[NaiveNode]
 
   // Leechers
-  val a = new DirectNode with Consumer
-  val b = new DirectNode with Consumer
+  val a = new NaiveNode with Consumer
+  val b = new NaiveNode with Consumer
   // Seeders
-  val c = new DirectNode with Producer
-  val d = new DirectNode with Producer
+  val c = new NaiveNode with Producer
+  val d = new NaiveNode with Producer
 
   n.join(a)
   n.join(b)

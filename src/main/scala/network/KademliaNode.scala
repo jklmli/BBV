@@ -2,8 +2,7 @@ package main.scala.network
 
 import java.util.UUID
 
-import main.scala.data.Data
-import main.scala.node.{Producer, Consumer, Node}
+import main.scala.node.{Consumer, Node}
 
 object KademliaNode {
   // UUID hashcodes are Ints, which are 32 bits
