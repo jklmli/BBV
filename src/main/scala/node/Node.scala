@@ -18,5 +18,7 @@ abstract class Node[T <: Node[T]](val id: UUID = UUID.randomUUID()) {
   def unlink(that: T) {
     assert(connections contains that)
   }
+
+  def pathTo(that: T with Consumer): Traversable[T with Consumer]
 }
 

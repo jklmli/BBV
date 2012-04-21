@@ -1,9 +1,9 @@
-package main.scala.network.kademlia
+package main.scala.network
 
 import java.util.UUID
 
-import main.scala.node.Node
 import main.scala.data.Data
+import main.scala.node.{Producer, Consumer, Node}
 
 object KademliaNode {
   // UUID hashcodes are Ints, which are 32 bits
@@ -27,6 +27,11 @@ class KademliaNode extends Node[KademliaNode] {
   override def unlink(that: KademliaNode) {
     super.unlink(that)
     bucketWith(that) -= that
+  }
+
+  override def pathTo(that: KademliaNode with Consumer):
+    Traversable[KademliaNode with Consumer] = {
+    None
   }
 
   def ping(node: KademliaNode): Boolean = closestNodes(node.id).exists(_ == node)

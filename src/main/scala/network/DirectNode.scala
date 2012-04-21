@@ -1,6 +1,7 @@
-package main.scala.network.direct
+package main.scala.network
 
-import main.scala.node.Node
+import main.scala.node.{Producer, Consumer, Node}
+
 
 class DirectNode extends Node[DirectNode] {
   private val links = scala.collection.mutable.Set[DirectNode]()
@@ -15,6 +16,11 @@ class DirectNode extends Node[DirectNode] {
   override def unlink(that: DirectNode) {
     super.unlink(that)
     links -= that
+  }
+
+  override def pathTo(that: DirectNode with Consumer):
+    Traversable[DirectNode with Consumer] = {
+    if (connections contains that) List(that) else None
   }
 }
 
