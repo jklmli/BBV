@@ -9,7 +9,7 @@ import main.scala.node.{Producer, Consumer}
 
 class Kademlia extends Network[KademliaNode] {
   def hops(from: KademliaNode, to: KademliaNode):
-    Traversable[KademliaNode with Producer with Consumer] = {
+  Traversable[KademliaNode with Producer with Consumer] = {
     None
   }
 

@@ -6,7 +6,7 @@ trait User {
   val files = scala.collection.mutable.Set[Data]()
 
   def store(file: Data) {
-    assert (!(files contains file))
+    assert(!(files contains file))
     files += file
   }
 
