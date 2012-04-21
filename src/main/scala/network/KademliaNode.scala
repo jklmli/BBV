@@ -31,27 +31,11 @@ class KademliaNode extends Node[KademliaNode] {
 
   override def pathTo(that: KademliaNode with Consumer):
     Traversable[KademliaNode with Consumer] = {
+    // TODO: implement!
     None
   }
 
   def ping(node: KademliaNode): Boolean = closestNodes(node.id).exists(_ == node)
-
-
-  def findNode(key: UUID): KademliaNode = {
-    new KademliaNode()
-  }
-
-  def findFile(key: UUID): Boolean = {
-    true
-  }
-
-  def send(that: KademliaNode, file: Data) {
-    // TODO: unimplemented
-  }
-
-  def receive(that: KademliaNode, file: Data) {
-    // TODO: unimplemented
-  }
 
   // Finds the _bucketDepth_ closest Nodes
   private def closestNodes(key: UUID): Set[KademliaNode] = {
