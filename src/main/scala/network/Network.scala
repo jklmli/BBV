@@ -30,6 +30,8 @@ abstract class Network[T <: Node[T]] {
   }
 
   def transfer(sender: T with Producer, receiver: T with Consumer, file: Data) {
+    assert(sender.files contains file)
+
     val path = route(sender, receiver)
 
     if (path != None) {
