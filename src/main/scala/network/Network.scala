@@ -27,13 +27,13 @@ class Network[T <: Node[T]] {
 
     if (route != None) {
       println(route)
-      sender send file
+      sender ! ("send", file)
 
-      val nextHop = route.head
-      nextHop receive file
+      val nextHop = route.head.asInstanceOf[T with Consumer with Producer]
+      nextHop ! ("receive", file)
 
       if (nextHop != receiver) {
-        transfer(nextHop.asInstanceOf[T with Producer], receiver, file)
+        transfer(nextHop, receiver, file)
       }
     }
     else {

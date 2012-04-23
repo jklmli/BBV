@@ -26,7 +26,8 @@ object Square extends App {
 
   val file1 = new Data("file1")
 
-  c.store(file1)
+  c.start()
+  c ! ("share", file1)
 
   assert(b.files.size == 0)
   n.transfer(c, b, file1)

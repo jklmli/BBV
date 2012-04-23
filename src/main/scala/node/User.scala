@@ -1,28 +1,22 @@
 package main.scala.node
 
 import main.scala.data.Data
-import actors.Actor
+import main.scala.util.MixableActor
 
-trait User extends Actor {
+trait User extends MixableActor {
   val files = scala.collection.mutable.Set[Data]()
 
-  def act() {
-    loop {
-      react {
-        case ("store", file: Data) =>
-          store(file)
-        case ("unstore", file: Data) =>
-          unstore(file)
-      }
-    }
+  override def receive = {
+    case ("share", file: Data) =>
+      store(file)
   }
 
-  private def store(file: Data) {
+  protected def store(file: Data) {
     assert(!(files contains file))
     files += file
   }
 
-  private def unstore(file: Data) {
+  protected def unstore(file: Data) {
     assert(files contains file)
     files -= file
   }

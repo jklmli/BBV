@@ -7,4 +7,3 @@ class Data(val payload: String) {
 
   override def hashCode: Int = payload.hashCode
 }
-

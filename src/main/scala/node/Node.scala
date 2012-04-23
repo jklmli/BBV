@@ -1,8 +1,10 @@
 package main.scala.node
 
 import java.util.UUID
+import main.scala.util.MultiActor
 
-abstract class Node[T <: Node[T]](val id: UUID = UUID.randomUUID()) {
+abstract class Node[T <: Node[T]](val id: UUID = UUID.randomUUID())
+  extends MultiActor {
   def connections: Set[T]
 
   override def equals(that: Any): Boolean = {

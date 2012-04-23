@@ -1,8 +1,6 @@
 package main.scala.util
 
-trait MixableActor {
-  self: MultiActor =>
-
+trait MixableActor extends MultiActor {
   protected def receive: PartialFunction[Any, Unit]
 
   acts = receive :: acts
