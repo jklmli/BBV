@@ -1,15 +1,15 @@
 package main.scala.simulation
 
-import main.scala.node.{Consumer, Producer}
 import main.scala.data.Data
 import main.scala.network.{Network, NaiveNode}
+import main.scala.node.{Banker, Consumer, Producer}
 
 object Square extends App {
   val n = new Network[NaiveNode]
 
   // Leechers
   val a = new NaiveNode with Consumer
-  val b = new NaiveNode with Consumer
+  val b = new NaiveNode with Consumer with Banker
   // Seeders
   val c = new NaiveNode with Producer
   val d = new NaiveNode with Producer

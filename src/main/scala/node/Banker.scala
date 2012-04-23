@@ -6,12 +6,12 @@ import main.scala.util.MixableActor
 trait Banker extends MixableActor {
   private val bank = scala.collection.mutable.Map[Node[_], Account]()
 
-  override def receive = {
+  receive ({
     case ("open", node: Node[_]) =>
       openAccount(node)
     case ("close", node: Node[_]) =>
       closeAccount(node)
-  }
+  }: PartialFunction[Any, Unit])
 
   def account(node: Node[_]): Account = {
     bank(node)

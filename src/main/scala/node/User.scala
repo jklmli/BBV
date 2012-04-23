@@ -6,12 +6,12 @@ import main.scala.util.MixableActor
 trait User extends MixableActor {
   val files = scala.collection.mutable.Set[Data]()
 
-  override def receive = {
+  receive ({
     case ("die") =>
       exit()
     case ("share", file: Data) =>
       store(file)
-  }
+  }: PartialFunction[Any, Unit])
 
   protected def store(file: Data) {
     assert(!(files contains file))

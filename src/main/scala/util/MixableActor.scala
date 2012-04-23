@@ -1,7 +1,19 @@
 package main.scala.util
 
-trait MixableActor extends MultiActor {
-  protected def receive: PartialFunction[Any, Unit]
+import actors.Actor
 
-  acts = receive :: acts
+class MixableActor extends Actor {
+  protected var acts = List[PartialFunction[Any, Unit]]()
+
+  final override def act() {
+    loop {
+      react {
+        acts.reduce((a, b) => a orElse b)
+      }
+    }
+  }
+
+  final def receive(act: PartialFunction[Any, Unit]) {
+    acts = act :: acts
+  }
 }
