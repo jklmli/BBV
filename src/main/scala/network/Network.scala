@@ -26,7 +26,6 @@ class Network[T <: Node[T]] {
     val route = sender.pathTo(receiver)
 
     if (route != None) {
-      println(route)
       sender ! ("send", file)
 
       val nextHop = route.head.asInstanceOf[T with Consumer with Producer]

@@ -1,20 +1,16 @@
 package main.scala.node
 
-import actors.Actor
 import main.scala.data.Account
+import main.scala.util.MixableActor
 
-trait Banker extends Actor {
+trait Banker extends MixableActor {
   private val bank = scala.collection.mutable.Map[Node[_], Account]()
 
-  def act() {
-    loop {
-      react {
-        case ("open", node: Node[_]) =>
-          openAccount(node)
-        case ("close", node: Node[_]) =>
-          closeAccount(node)
-      }
-    }
+  override def receive = {
+    case ("open", node: Node[_]) =>
+      openAccount(node)
+    case ("close", node: Node[_]) =>
+      closeAccount(node)
   }
 
   def account(node: Node[_]): Account = {
