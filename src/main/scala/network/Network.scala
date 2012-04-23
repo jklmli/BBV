@@ -49,4 +49,8 @@ class Network[T <: Node[T]] {
     node1 unlink node2
     node2 unlink node1
   }
+
+  def shutdown() {
+    nodes foreach (_ ! ("die"))
+  }
 }
