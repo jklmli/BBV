@@ -28,8 +28,12 @@ class Network[T <: Node[T]] {
     if (route != None) {
       sender ! ("send", file)
 
+      // TODO: block until operation completes
+
       val nextHop = route.head.asInstanceOf[T with Consumer with Producer]
       nextHop ! ("receive", file)
+
+      // TODO: block until operation completes
 
       if (nextHop != receiver) {
         transfer(nextHop, receiver, file)
