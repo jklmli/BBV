@@ -7,12 +7,10 @@ import main.scala.node.{Banker, Consumer, Producer}
 object Square extends App {
   val n = new Network[NaiveNode]
 
-  // Leechers
-  val a = new NaiveNode with Consumer
-  val b = new NaiveNode with Consumer with Banker
-  // Seeders
-  val c = new NaiveNode with Producer
-  val d = new NaiveNode with Producer
+  val a = new NaiveNode with Consumer with Banker with Producer
+  val b = new NaiveNode with Banker with Consumer with Producer
+  val c = new NaiveNode with Producer with Banker with Consumer
+  val d = new NaiveNode with Consumer with Producer with Banker
 
   n.join(a)
   n.join(b)

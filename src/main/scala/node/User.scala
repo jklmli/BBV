@@ -11,6 +11,8 @@ trait User extends MixableActor {
       exit()
     case ("share", file: Data) =>
       store(file)
+    case ("unshare", file: Data) =>
+      unstore(file)
   }: PartialFunction[Any, Unit])
 
   protected def store(file: Data) {
