@@ -3,7 +3,7 @@ package main.scala.util
 trait MixableActor {
   self: MultiActor =>
 
-  protected def mixableAct: PartialFunction[Any, Unit]
+  protected def receive: PartialFunction[Any, Unit]
 
-  acts = mixableAct :: acts
+  acts = receive :: acts
 }
