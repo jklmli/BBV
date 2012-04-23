@@ -6,12 +6,12 @@ import main.scala.data.Account
 trait Banker extends Actor {
   private val bank = scala.collection.mutable.Map[Node[_], Account]()
 
-  def act(){
-    loop{
-      react{
-        case("open", node: Node) =>
+  def act() {
+    loop {
+      react {
+        case ("open", node: Node[_]) =>
           openAccount(node)
-        case("close", node: Node) =>
+        case ("close", node: Node[_]) =>
           closeAccount(node)
       }
     }
