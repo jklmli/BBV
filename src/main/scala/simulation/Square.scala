@@ -27,11 +27,17 @@ object Square extends App {
   val file1 = new Data("file1")
 
   c.start()
-  c ! ("share", file1)
+  b.start()
 
+  c ! ("share", file1)
   assert(b.files.size == 0)
+  Thread.sleep(100)
   n.transfer(c, b, file1)
+  Thread.sleep(100)
   assert(b.files.size == 1)
+
+  c ! ("die")
+  b ! ("die")
 
   // Compile-time error!
   // n.transfer(a, b, file1)

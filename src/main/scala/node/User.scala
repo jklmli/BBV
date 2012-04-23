@@ -7,6 +7,8 @@ trait User extends MixableActor {
   val files = scala.collection.mutable.Set[Data]()
 
   override def receive = {
+    case ("die") =>
+      exit()
     case ("share", file: Data) =>
       store(file)
   }
