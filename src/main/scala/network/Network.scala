@@ -1,7 +1,7 @@
 package main.scala.network
 
 import main.scala.data.Data
-import main.scala.node.{Node, Producer, Consumer}
+import main.scala.node.{Node, Provider, Consumer}
 
 class Network[T <: Node[T]] {
   val nodes = scala.collection.mutable.Set[T]()
@@ -20,7 +20,7 @@ class Network[T <: Node[T]] {
     member.connections foreach (disconnect(_, member))
   }
 
-  def transfer(sender: T with Producer, receiver: T with Consumer, file: Data) {
+  def transfer(sender: T with Provider, receiver: T with Consumer, file: Data) {
     assert(sender.files contains file)
 
     val route = sender.pathTo(receiver)
@@ -30,7 +30,7 @@ class Network[T <: Node[T]] {
 
       // TODO: block until operation completes
 
-      val nextHop = route.head.asInstanceOf[T with Consumer with Producer]
+      val nextHop = route.head.asInstanceOf[T with Consumer with Provider]
       nextHop ! ("receive", file)
 
       // TODO: block until operation completes

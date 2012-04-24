@@ -2,15 +2,15 @@ package main.scala.simulation
 
 import main.scala.data.Data
 import main.scala.network.{Network, NaiveNode}
-import main.scala.node.{Banker, Consumer, Producer}
+import main.scala.node.{Banker, Consumer, Provider}
 
 object Square extends App {
   val network = new Network[NaiveNode]
 
-  val a = new NaiveNode with Consumer with Banker with Producer
-  val b = new NaiveNode with Banker with Consumer with Producer
-  val c = new NaiveNode with Producer with Banker with Consumer
-  val d = new NaiveNode with Consumer with Producer with Banker
+  val a = new NaiveNode with Consumer with Banker with Provider
+  val b = new NaiveNode with Banker with Consumer with Provider
+  val c = new NaiveNode with Provider with Banker with Consumer
+  val d = new NaiveNode with Consumer with Provider with Banker
 
   network.join(a)
   network.join(b)
