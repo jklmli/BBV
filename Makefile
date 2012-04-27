@@ -7,6 +7,6 @@ doc:
 	@@make -C $(DOCDIR) clean
 
 clean:
-	@@echo "Removing docs..."
-	@@rm -f doc/*
+	@@echo "Removing generated cs598.pdf in docs..."
+	@@rm -f doc/out/*
 

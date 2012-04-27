@@ -181,7 +181,7 @@ Malicious peers harm the trustworthiness of a peer-to-peer network.  A peer with
 
 
 \subsection{System Model}
-The system model that we have designed places roles upon all nodes.  These roles play a vital role in the user transaction.
+The system model that we have designed places roles upon all nodes.  These roles play a vital role in the user transaction (Fig. 2).
 \begin{itemize}
 \item[\texttt{Data Provider}] Provides data to data consumers
 \item[\texttt{Data Consumer}] Receives data from data providers
@@ -191,12 +191,13 @@ The system model that we have designed places roles upon all nodes.  These roles
 Our innovative contribution is the design of the distributed broker utilizing virtual currency in P2P storage.  Recent research has evaluated the role of the broker has an ideal intermediary.  Our team is taking that idea a step further.  Instead of naming a single broker to handle transactions we have decided to explore and implement a distributed broker.
 
 \subsection{Distributed Broker}
-In order to reduce the impact that a malicious broker could have on the system the role of broker can be distributed to multiple nodes.  The data decryption key can be dispersed using a secret sharing algorithm.  In this case the consumer would send the payment authorization to each broker along with the hash of the encrypted data.  If the encrypted hash is verified then each broker would send their fragment of the decryption key to the consumer and the payment authorization to the bank nodes.  A bank node will not consider the payment authorization as valid until it is received from a threshold number of brokers.   A node can only be a broker for a specific fragment based on its id.  Each broker must be able to verify that the payment authorization provided by the consumer is for the same provider that provided the data.  The data provider has access to the data decryption key and so is able to generate the fragments of the key that each broker holds.  The data provider will give the consumer their id encrypted with a key generated based on each decryption key fragment.  The consumer can then give each encrypted id to the appropriate broker.  Each broker can then decrypt the encrypted id by generating the same encryption key based on the data decryption key fragment they hold.  If the payment authorization does not match the decrypted id then the broker will reject the transaction (Fig. 2).
+In order to reduce the impact that a malicious broker could have on the system the role of broker can be distributed to multiple nodes.  The data decryption key can be dispersed using a secret sharing algorithm.  In this case the consumer would send the payment authorization to each broker along with the hash of the encrypted data.  If the encrypted hash is verified then each broker would send their fragment of the decryption key to the consumer and the payment authorization to the bank nodes.  A bank node will not consider the payment authorization as valid until it is received from a threshold number of brokers.   A node can only be a broker for a specific fragment based on its id.  Each broker must be able to verify that the payment authorization provided by the consumer is for the same provider that provided the data.  The data provider has access to the data decryption key and so is able to generate the fragments of the key that each broker holds.  The data provider will give the consumer their id encrypted with a key generated based on each decryption key fragment.  The consumer can then give each encrypted id to the appropriate broker.  Each broker can then decrypt the encrypted id by generating the same encryption key based on the data decryption key fragment they hold.  If the payment authorization does not match the decrypted id then the broker will reject the transaction (Fig. 3).
 
 \begin{figure}
   \begin{center}
-    \includegraphics[height=85mm,width=65mm]{graphics/transaction.jpg}
-  \caption{A transaction involving a distributed broker.}
+    \includegraphics[height=65mm,width=65mm]{graphics/NodesSystemDiagram.jpg}
+  \caption{Nodes system diagram depicting the relationships between the various node roles.  Each node has an associated set of bank nodes.  Each data chunk has an associated set of brokers.  Each data chunk also has a set of data providers that is maintained by the brokers for the data.
+}
   \end{center}
 \end{figure}
 
@@ -210,6 +211,9 @@ Currency is represented as discrete units.  There are two types of currency: dat
 
 \subsection{Bank Nodes}
 A set of bank nodes store the currency held by each node.  A node does not have control over the bank nodes assigned to it.  When a bank node receives a signed transfer authorization the sending bank node will remove the unit from its database and the receiving node will add the unit to its database.  A specific threshold of the bank nodes must agree to the presence of a currency unit for that unit to be considered valid.
+
+\subsection{Secret Sharing}
+Secret sharing is a method used in distributing a secret amongst a group of participants, each of whom is allocated a "share" of the secret.  The secret can be reconstructed only when a sufficient number of shares are combined together.  As a result, the individual shares, alone, provide no useful information.  In our system secret sharing is used to distribute the broker role to multiple nodes
 
 \subsection{Currency Exchange}
 \begin{enumerate}
@@ -257,6 +261,12 @@ ones.  Furthermore, Kademlia's use of a single routing algorithm, as opposed to
 the dual gauge-and-pinpoint algorithms or other protocols, is both easier to 
 understand and implement from a design perspective.
 
+\begin{figure}
+  \begin{center}
+    \includegraphics[height=85mm,width=65mm]{graphics/BrokeredDataTransfer.jpg}
+  \caption{A brokered data transfer.}
+  \end{center}
+\end{figure}
 %----------------------------------------------------------------------
 % SECTION III: Simulation
 %----------------------------------------------------------------------
