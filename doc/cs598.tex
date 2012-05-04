@@ -244,7 +244,10 @@ When nodes initiate a transaction they exchange signed transaction records which
 \item The transaction expiration date
 \item Any other supporting information
 \end{itemize}
-When the transaction is complete each node appends a signed satisfaction statement to the record and submits the record to the appropriate bank nodes. If the satisfaction statement indicates a complaint it must also be signed by a threshold of the bank nodes of the complaining node.  This provides a mechanism for bank nodes to stop complaints for nodes that have a high ratio of complaints to completed transactions.  Signed transaction records can sometimes be used as evidence for a complaint.  For example if a node makes contridictory statements to different nodes or to the same node at different points in time the signed transaction records can be used to prove that fact.  Depending on the nature of the complaint nodes against which a complaint with evidence has been made may be removed from the system.  Each node acts as one of its bank nodes.  This allows the node to collect and provide the information needed to check it bank nodes.
+When the transaction is complete each node appends a signed satisfaction statement to the record and submits the record to the appropriate bank nodes. If the satisfaction statement indicates a complaint it must also be signed by a threshold of the bank nodes of the complaining node.  This provides a mechanism for bank nodes to stop complaints for nodes that have a high ratio of complaints to completed transactions.  Signed transaction records can sometimes be used as evidence for a complaint.  For example if a node makes contradictory statements to different nodes or to the same node at different points in time the signed transaction records can be used to prove that fact.  Depending on the nature of the complaint nodes against which a complaint with evidence has been made may be removed from the system.  Each node acts as one of its bank nodes.  This allows the node to collect and provide the information needed to check it bank nodes.
+
+\subsection{Node Role Motivations}
+It is reasonable to expect that nodes would not take on the broker and bank node roles unless a motivation exists for them to do so.  In our system nodes must perform these roles in order to maintain a good reputation.  When a node fails to participate in a transaction the other nodes in its set will report the fact to the bank nodes of the node.  If the node is inactive its bank nodes will return this information and the other nodes in the set will not report inactivity for that node for a specified time interval.  If the node was active then a complaint will be registered against the node which will lower its reputation.  The bank nodes of a node have the information they need to determine if the node was active or inactive.  A node is considered active if it has recent incoming or outgoing currency transfers.
 
 \subsection{Automated transaction valuation based on reputation parameters}
 Because of the risk of fraud inherent in peer-to-peer systems data consumers should attempt to use the most reputable data providers available.  It is expected that highly reputable data providers should receive more currency units per transaction than less reputable data providers.  Conversely data providers may charge less to more reputable data consumers.  
@@ -258,7 +261,26 @@ Data consumers can use the following information when determining how much curre
 The state of the network is expected to be constantly changing.  Data consumers should be capable of automatically adjusting their valuations as network conditions change. 
 
 \subsection{Determining Broker / Bank Set Size}
-The size of the broker and bank sets are automatically adjusted periodically.  The size of these sets should be large enough to ensure that uncooperative nodes in the set will not be numerous enough to interfere with operations.  The sets should also not be larger than is necessary to minimize overhead.  The members of a set collectivly decide whether new members should be added or existing members removed based on the recent reliability statisitics of the members of the set.  One basic metric is the ratio of successful transactions to number of transactions.  If the overall reliability of the set is too low low reliability members can be replaced with new members.  If the overall reliability is high and the set is large low reliability members can be removed.  The initial size of a set is determined by querying the size of other sets.
+The size of the broker and bank sets are automatically adjusted periodically.  The size of these sets should be large enough to ensure that uncooperative nodes in the set will not be numerous enough to interfere with operations.  The sets should also not be larger than is necessary to minimize overhead.  The members of a set collectively decide whether new members should be added or existing members removed based on the recent reliability statistics of the members of the set.  One basic metric is the ratio of successful transactions to number of transactions.  If the overall reliability of the set is too low low reliability members can be replaced with new members.  If the overall reliability is high and the set is large low reliability members can be removed.  The initial size of a set is determined by querying the size of other sets.
+
+\subsection{Attack Analysis}
+
+In order for our system to be successful it must enforce cooperation even when most nodes act only in their own self interest.  Some nodes may act with the sole goal of disrupting the system.  
+
+Bank Nodes:
+Bank nodes could collude to provide inaccurate positive reputation information
+Bank nodes could collude to provide inaccurate negative reputation information
+Bank nodes could collude to transfer the same currency unit to different nodes
+Bank nodes could collude to deny a node access to its currency
+
+Brokers:
+Brokers could collude to authorize transactions without valid currency
+Brokers could collude to authorize transactions with an invalid encrypted data hash
+Brokers could collude to sell their shares of the decryption key 
+Brokers could collude to reject all transactions
+
+Data Providers:
+Data Providers could sell the data decryption key alone without providing data
 
 %----------------------------------------------------------------------
 % SECTION III: Simulation
