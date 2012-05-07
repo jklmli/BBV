@@ -1,6 +1,7 @@
 package node;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -66,6 +67,8 @@ public interface BrokerNode extends Node {
 		}
 	}
 
+	public List<DataProviderNode> getDataProviders();
+	
 	/**
 	 * Register a transaction.  This method is called by data providers before
 	 * data is provided.
@@ -75,8 +78,8 @@ public interface BrokerNode extends Node {
 	/**
 	 * Verify that the encrypted data hash matches the expected value. If the
 	 * hash matches forward a share of the payment authorization to the data 
-	 * provider and return the decryption key to the consumer.  This method is
-	 * called by data consumers after data is received. 
+	 * provider and return the decryption key share to the consumer.  This 
+	 * method is called by data consumers after data is received. 
 	 */
 	public DecryptionKeySecretShare finalizeTransaction(
 		UUID transactionId, Collection<CurrencyUnit> payment, Data encryptedDataHash);	
