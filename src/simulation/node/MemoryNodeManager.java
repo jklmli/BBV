@@ -128,4 +128,10 @@ public class MemoryNodeManager implements NodeManager {
 	public NodeGroup<BrokerNode> getBrokerNodes(Set<UUID> brokerNodeIds) {
 		return null;
 	}
+
+	@Override
+	public int getBrokerThresholdForData(UUID dataId) {
+		return getBrokerNodesForData(dataId).getNodes().size();
+	}
+	
 }

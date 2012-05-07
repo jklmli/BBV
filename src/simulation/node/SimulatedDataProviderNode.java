@@ -3,24 +3,70 @@ package simulation.node;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
-import node.BrokerNode.Transaction;
-import node.NodeManager.NodeGroup;
+import node.BankNode;
 import node.BrokerNode;
+import node.CurrencyTransferAuthorization;
 import node.DataProviderNode;
+import node.DataRequest;
 import node.NodeManager;
+import node.NodeManager.NodeGroup;
+import node.Transaction;
+import simulation.util.SimulationSigned;
+import util.Signed;
 import data.Data;
 
 public class SimulatedDataProviderNode extends SimulatedNode implements DataProviderNode {
+	private static class TransactionContext
+	{
+		private Transaction transaction;
+		private Signed<CurrencyTransferAuthorization> currencyTransferAuthorization;
+		private List<BankNode> consumerBankNodes;
+
+		public TransactionContext(
+				Transaction transaction,
+				Signed<CurrencyTransferAuthorization> currencyTransferAuthorization, 
+				List<BankNode> consumerBankNodes) {
+			super();
+			this.transaction = transaction;
+			this.currencyTransferAuthorization = currencyTransferAuthorization;
+			this.consumerBankNodes = consumerBankNodes;
+		}
+		
+		public Transaction getTransaction() {
+			return transaction;
+		}
+		public Signed<CurrencyTransferAuthorization> getCurrencyTransferAuthorization() {
+			return currencyTransferAuthorization;
+		}		
+		
+		public void setCurrencyTransferAuthorization(Signed<CurrencyTransferAuthorization> transferAuth)
+		{
+			this.currencyTransferAuthorization = transferAuth;
+		}
+		
+		public List<BankNode> getConsumerBankNodes()
+		{
+			return consumerBankNodes;
+		}
+	}
+	
+	private Map<UUID, TransactionContext> transactionContextMap = new HashMap<UUID, TransactionContext>();
 	
 	public SimulatedDataProviderNode(UUID nodeId, NodeManager nodeManager, Map<UUID, Data> dataStore)
 	{
 		super(nodeId, nodeManager, dataStore);
 	}
 	
-	public Transaction requestData(UUID consumerId, UUID dataId, int paymentAmount)
+	public Transaction requestData(Signed<DataRequest> signedDataRequest)
 	{
+		DataRequest dataRequest = signedDataRequest.getObject();
+		
+		UUID dataId = dataRequest.getDataId();
+		UUID consumerId = dataRequest.getConsumerId();
+			
 		// Select brokers
 		Map<UUID, BrokerNode> brokerMap = new HashMap<UUID, BrokerNode>();
 		NodeGroup<BrokerNode> brokers = nodeManager.getBrokerNodesForData(dataId);
@@ -33,14 +79,20 @@ public class SimulatedDataProviderNode extends SimulatedNode implements DataProv
 		}
 		
 		Transaction transaction = new Transaction(
-			consumerId, getId(), dataId, paymentAmount, brokerMap.keySet());
+				consumerId, getId(), dataId, dataRequest.getCurrencyIds(), brokerMap.keySet());
 
-		// Register transaction with brokers
-		for(BrokerNode broker : brokerMap.values())
+		List<BankNode> consumerBankNodes = 
+			nodeManager.getBankNodesForNode(consumerId).getNodes();
+		
+		// Verify and hold currency units
+		for(BankNode bankNode : consumerBankNodes)
 		{
-			broker.registerTransaction(transaction);
+			bankNode.verifyAndHoldCurrencyUnits(signedDataRequest);
 		}
 
+		TransactionContext transactionContext = new TransactionContext(transaction, null, consumerBankNodes);
+		transactionContextMap.put(transaction.getId(), transactionContext);
+		
 		return transaction;
 	}
 	
@@ -73,7 +125,52 @@ public class SimulatedDataProviderNode extends SimulatedNode implements DataProv
 	}
 
 	@Override
-	public void addCurrencyTransferAuthorizationFragment(
-			Data currencyTransferFragment) {
+	public void addCurrencyTransferAuthorization(
+		UUID transactionId,
+		Signed<CurrencyTransferAuthorization> currencyTransferAuthorization) {
+
+		if(!currencyTransferAuthorization.isSignatureValid())
+		{
+			// TODO: Throw exception
+		}
+		
+		TransactionContext transactionContext = transactionContextMap.get(transactionId);
+		
+		if(transactionContext == null)
+		{
+			// TODO: Throw exception
+		}
+		
+		Signed<CurrencyTransferAuthorization> txnCurrencyTransferAuthorization = 
+			transactionContext.getCurrencyTransferAuthorization();
+		
+		if(txnCurrencyTransferAuthorization == null)
+		{
+			txnCurrencyTransferAuthorization = currencyTransferAuthorization;
+
+			transactionContext.setCurrencyTransferAuthorization(
+				txnCurrencyTransferAuthorization);			
+		} else
+		{
+			txnCurrencyTransferAuthorization.addSignatures(currencyTransferAuthorization);			
+		}
+		
+		Transaction transaction = transactionContext.getTransaction();
+		Set<UUID> brokerNodeIds = transaction.getBrokerNodeIds();
+		int threshold = nodeManager.getBrokerThresholdForData(transaction.getDataId());
+		
+		if(txnCurrencyTransferAuthorization.getSigningNodeCount(brokerNodeIds) >=
+			threshold)
+		{
+			// The transfer authorization has been signed by a threshold of brokers
+			// forward it on to the consumer's bank nodes
+			for(BankNode bankNode : transactionContext.getConsumerBankNodes())
+			{
+				bankNode.transferCurrency(
+					new SimulationSigned<Transaction>(getId(), transaction), 
+					txnCurrencyTransferAuthorization);
+			}
+		}
 	}
+
 }

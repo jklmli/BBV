@@ -1,15 +1,16 @@
 package simulation.node;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import node.BankNode;
 import node.CurrencyUnit;
 
-public class MemoryBankNode implements BankNode {
+public abstract class MemoryBankNode implements BankNode {
 
 	private static class CurrencyMap extends HashMap<UUID, CurrencyUnit> {
 		private static final long serialVersionUID = 1L;
@@ -27,7 +28,6 @@ public class MemoryBankNode implements BankNode {
 		return id;
 	}
 
-	@Override
 	public void add(List<CurrencyUnit> currencyUnits) {
 		for (CurrencyUnit currencyUnit : currencyUnits) {
 			CurrencyMap currencyMap = nodeCurrencyMap.get(currencyUnit
@@ -42,7 +42,6 @@ public class MemoryBankNode implements BankNode {
 		}
 	}
 
-	@Override
 	public void remove(List<CurrencyUnit> currencyUnits) {
 		for (CurrencyUnit currencyUnit : currencyUnits) {
 			CurrencyMap currencyMap = nodeCurrencyMap.get(currencyUnit
@@ -55,36 +54,14 @@ public class MemoryBankNode implements BankNode {
 	}
 
 	@Override
-	public List<CurrencyUnit> getCurrencyUnits(UUID nodeId, List<UUID> ids) {
+	public Set<UUID> getCurrencyUnitIds(UUID nodeId) {		
 		CurrencyMap currencyMap = nodeCurrencyMap.get(nodeId);
-
-		if (currencyMap == null) {
-			return new ArrayList<CurrencyUnit>();
-		}
-
-		List<CurrencyUnit> currencyUnits = new ArrayList<CurrencyUnit>();
-
-		for (UUID id : ids) {
-			CurrencyUnit currencyUnit = currencyMap.get(id);
-
-			if (currencyUnit != null) {
-				currencyUnits.add(currencyUnit);
-			}
-		}
-
-		return currencyUnits;
-	}
-
-	@Override
-	public List<CurrencyUnit> getCurrencyUnits(UUID nodeId) {
-		List<CurrencyUnit> currencyUnits = new ArrayList<CurrencyUnit>();
 		
-		CurrencyMap currencyMap = nodeCurrencyMap.get(nodeId);
-		if(currencyMap != null)
+		if(currencyMap == null)
 		{
-			currencyUnits.addAll(currencyMap.values());
+			return new HashSet<UUID>();
 		}
 		
-		return currencyUnits;
+		return currencyMap.keySet();
 	}
 }

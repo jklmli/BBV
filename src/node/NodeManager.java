@@ -93,4 +93,6 @@ public interface NodeManager {
 	
 	NodeGroup<BrokerNode> getBrokerNodes(Set<UUID> brokerNodeIds);
 
+	int getBrokerThresholdForData(UUID dataId);
+
 }

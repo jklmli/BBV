@@ -1,15 +1,18 @@
 package node;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
+import util.Signed;
+
 public interface BankNode extends Node {
-
-	public void add(List<CurrencyUnit> currencyUnits);
+		
+	public Set<UUID> getCurrencyUnitIds(UUID nodeId);
 	
-	public void remove(List<CurrencyUnit> currencyUnits);
+	public boolean verifyAndHoldCurrencyUnits(Signed<DataRequest> dataRequest);
 	
-	public List<CurrencyUnit> getCurrencyUnits(UUID nodeId, List<UUID> ids);
+	public void transferCurrency(
+		Signed<Transaction> transaction,
+		Signed<CurrencyTransferAuthorization> transferAuthorization);
 
-	public List<CurrencyUnit> getCurrencyUnits(UUID nodeId);
 }

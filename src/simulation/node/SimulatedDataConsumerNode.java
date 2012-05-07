@@ -1,8 +1,8 @@
 package simulation.node;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -10,20 +10,22 @@ import java.util.UUID;
 
 import node.BankNode;
 import node.BrokerNode;
-import node.BrokerNode.Transaction;
-import node.CurrencyUnit;
+import node.CurrencyTransferAuthorization;
 import node.DataConsumerNode;
 import node.DataProviderNode;
+import node.DataRequest;
 import node.NodeManager;
 import node.NodeManager.NodeGroup;
+import node.Transaction;
 import simulation.Simulation;
+import simulation.util.SimulationSigned;
 import data.Data;
 
 public class SimulatedDataConsumerNode extends SimulatedNode implements DataConsumerNode {
 
 	private final List<BankNode> bankNodes = new ArrayList<BankNode>();
 	
-	private final Map<UUID, CurrencyUnit> currencyMap = new HashMap<UUID, CurrencyUnit>();
+	private final Set<UUID> currencyUnitIds = new HashSet<UUID>();
 	
 	
 	public SimulatedDataConsumerNode(UUID nodeId, NodeManager nodeManager, Map<UUID, Data> dataStore)
@@ -38,13 +40,7 @@ public class SimulatedDataConsumerNode extends SimulatedNode implements DataCons
 		
 		for(BankNode bankNode : bankNodes)
 		{
-			for(CurrencyUnit currencyUnit : bankNode.getCurrencyUnits(nodeId))
-			{
-				if(currencyUnit.isValid() && currencyUnit.getOwnerId().equals(nodeId))
-				{
-					currencyMap.put(currencyUnit.getId(), currencyUnit);
-				}
-			}
+			currencyUnitIds.addAll(bankNode.getCurrencyUnitIds(nodeId));
 		}
 	}
 	
@@ -65,31 +61,28 @@ public class SimulatedDataConsumerNode extends SimulatedNode implements DataCons
 
 		DataProviderNode provider = providers.getNode();
 
-		Set<CurrencyUnit> payment = allocateCurrencyUnitsForTransaction(dataId, provider);
-				
+		Set<UUID> allocatedCurrencyUnitIds = 
+			allocateCurrencyUnitsForTransaction(dataId, provider);
+
+		CurrencyTransferAuthorization transferAuthorization = 
+				new CurrencyTransferAuthorization(allocatedCurrencyUnitIds, getId(), provider.getId());
+		
 		try
 		{			
-			Transaction transaction = provider.requestData(getId(), dataId, payment.size());
+			DataRequest request = new DataRequest(
+				getId(), dataId, allocatedCurrencyUnitIds);
+			
+			Transaction transaction = provider.requestData(
+				new SimulationSigned<DataRequest>(getId(), request));
 			
 			Data encryptedData = provider.getData(transaction);
-			Data encryptedDataHash = hashCodec.getHash(encryptedData);
-			
-			List<Data> decryptionKeyFragments = new ArrayList<Data>();
-			
-			
+			Data encryptedDataHash = hashCodec.getHash(encryptedData);			
+						
 			NodeGroup<BrokerNode> brokers = nodeManager.getBrokerNodes(
 				transaction.getBrokerNodeIds());
 			
-			while(brokers.hasMoreNodes())
-			{
-				for(BrokerNode broker : brokers.getNodes())
-				{
-					Data decryptionKeyFragment = broker.finalizeTransaction(
-						transaction.getId(), payment, encryptedDataHash);
-					
-					decryptionKeyFragments.add(decryptionKeyFragment);
-				}
-			}
+			List<Data> decryptionKeyFragments = finalizeTransaction(
+				brokers, transaction, transferAuthorization, encryptedDataHash);
 			
 			Data decryptionKey = sharedSecretCodec.decode(decryptionKeyFragments);
 			Data decryptedData = encryptionCodec.decode(encryptedData, decryptionKey);
@@ -101,34 +94,55 @@ public class SimulatedDataConsumerNode extends SimulatedNode implements DataCons
 			return decryptedData;
 		} catch(Throwable e)
 		{
-			returnCurrencyUnits(payment);
+			returnCurrencyUnits(allocatedCurrencyUnitIds);
 			return null;
 		}
 	}
 
-	private Set<CurrencyUnit> allocateCurrencyUnitsForTransaction(UUID dataId, DataProviderNode provider)
+	private List<Data> finalizeTransaction(NodeGroup<BrokerNode> brokers, 
+			Transaction transaction, 
+			CurrencyTransferAuthorization transferAuthorization,
+			Data encryptedDataHash)
 	{
-		Set<CurrencyUnit> currencyUnits = new HashSet<CurrencyUnit>();
-		
-		List<CurrencyUnit> values = new ArrayList<CurrencyUnit>(currencyMap.values());
-		
-		if(values.size() > 0)
-		{
-			CurrencyUnit currencyUnit = values.get(0);
-			currencyUnit.transferTo(provider.getId());
-			currencyUnits.add(currencyUnit);
-			currencyMap.remove(currencyUnit.getId());
-		}
+		List<Data> decryptionKeyFragments = new ArrayList<Data>();
 
-		return currencyUnits;
+		while(brokers.hasMoreNodes())
+		{
+			for(BrokerNode broker : brokers.getNodes())
+			{
+				Data decryptionKeyFragment = broker.finalizeTransaction(
+					transaction, 
+					new SimulationSigned<CurrencyTransferAuthorization>(getId(), transferAuthorization), 
+					new SimulationSigned<Data>(getId(), encryptedDataHash));
+				
+				decryptionKeyFragments.add(decryptionKeyFragment);
+			}
+		}
+		
+		return decryptionKeyFragments;
 	}
 	
-	private void returnCurrencyUnits(Set<CurrencyUnit> currencyUnits)
+	private Set<UUID> allocateCurrencyUnitsForTransaction(UUID dataId, DataProviderNode provider)
 	{
-		for(CurrencyUnit currencyUnit : currencyUnits)
+		Set<UUID> allocatedUnitIds = new HashSet<UUID>();
+		
+		Iterator<UUID> it = this.currencyUnitIds.iterator();
+		if(it.hasNext())
+		{		
+			UUID currencyUnitId = it.next();
+			
+			allocatedUnitIds.add(currencyUnitId);
+			it.remove();
+		}
+
+		return allocatedUnitIds;
+	}
+	
+	private void returnCurrencyUnits(Set<UUID> allocatedUnitIds)
+	{
+		for(UUID currencyUnitId : allocatedUnitIds)
 		{
-			currencyUnit.transferTo(getId());
-			currencyMap.put(currencyUnit.getId(), currencyUnit);
+			this.currencyUnitIds.add(currencyUnitId);
 		}
 	}
 }

@@ -2,12 +2,12 @@ package node;
 
 import java.util.UUID;
 
-import node.BrokerNode.Transaction;
+import util.Signed;
 import data.Data;
 
 public interface DataProviderNode extends Node {
 
-	public Transaction requestData(UUID consumerId, UUID dataId, int paymentAmount);
+	public Transaction requestData(Signed<DataRequest> dataRequest);
 	public Data getData(Transaction transaction);
 	
 	public Data getEncryptedDataHash(UUID dataId);
@@ -15,10 +15,11 @@ public interface DataProviderNode extends Node {
 	public Data getGetDecryptionKeyFragmentForBroker(UUID dataId, UUID brokerId);
 	
 	/**
-	 * Adds a currency transfer authorization fragment.  When the node receives 
-	 * a sufficient number of currency transfer authorization fragments it will 
-	 * be able to restore the transfer authorization and forward it to the bank 
-	 * nodes 
+	 * Adds a currency transfer authorization.  When the node receives 
+	 * currency transfer authorizations from a sufficient number of brokers it 
+	 * will forward it to the bank nodes 
 	 */
-	public void addCurrencyTransferAuthorizationFragment(Data currencyTransferFragment);
+	public void addCurrencyTransferAuthorization(
+		UUID transactionId,
+		Signed<CurrencyTransferAuthorization> currencyTransferAuthorization);
 }
