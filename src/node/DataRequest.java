@@ -3,6 +3,10 @@ package node;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * A request for data that the consumer sends to a provider.  The provider can 
+ * use a signed data request to place a temporary hold on currency. 
+ */
 public class DataRequest
 {
 	private UUID consumerId;

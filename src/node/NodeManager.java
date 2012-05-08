@@ -77,6 +77,11 @@ public interface NodeManager {
 	void unregisterFromProvidersForData(DataProviderNode dataProvider, UUID dataId);
 	
 	/**
+	 * Returns the data provider with the given id
+	 */
+	DataProviderNode getDataProvider(UUID providerId);
+
+	/**
 	 * Returns a group of data providers for the data with the given id
 	 */
 	NodeGroup<DataProviderNode> getDataProvidersForData(UUID dataId);
@@ -91,12 +96,21 @@ public interface NodeManager {
 	 */
 	NodeGroup<BrokerNode> getBrokerNodesForData(UUID dataId);
 	
+	/**
+	 * Returns a group of broker nodes with the given ids
+	 */
 	NodeGroup<BrokerNode> getBrokerNodes(Set<UUID> brokerNodeIds);
 
+	/**
+	 * Returns the number of brokers needed to authorize a transaction for
+	 * the given data id
+	 */
 	int getBrokerThresholdForData(UUID dataId);
 
-	int getBankNodeThreshold(UUID consumerId);
-
-	DataProviderNode getDataProvider(UUID providerId);
+	/**
+	 * Returns the number of bankers needed to authorize transactions for the 
+	 * given node
+	 */
+	int getBankNodeThreshold(UUID nodeId);
 
 }

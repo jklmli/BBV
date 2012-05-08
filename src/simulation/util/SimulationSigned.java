@@ -7,6 +7,9 @@ import java.util.UUID;
 import util.Signed;
 import data.Data;
 
+/**
+ * A wrapper for signed objects
+ */
 public class SimulationSigned<T> implements util.Signed<T> {
 	private T object;
 	

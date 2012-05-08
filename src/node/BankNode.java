@@ -45,6 +45,9 @@ public interface BankNode extends Node {
 		Signed<Transaction> transaction,
 		Signed<CurrencyTransferAuthorization> transferAuthorization);
 
+	/**
+	 * Receive currency from the bank node of another node
+	 */
 	public void receiveCurrency(
 		Signed<Transaction> transaction,
 		Set<CurrencyUnit> currencyUnits);
