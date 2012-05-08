@@ -110,7 +110,7 @@ public class SimulatedDataConsumerNode extends SimulatedNode implements DataCons
 		{
 			for(BrokerNode broker : brokers.getNodes())
 			{
-				Data decryptionKeyFragment = broker.finalizeTransaction(
+				Data decryptionKeyFragment = broker.processTransaction(
 					transaction, 
 					new SimulationSigned<CurrencyTransferAuthorization>(getId(), transferAuthorization), 
 					new SimulationSigned<Data>(getId(), encryptedDataHash));

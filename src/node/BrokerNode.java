@@ -1,12 +1,16 @@
 package node;
 
-import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 import util.Signed;
 import data.Data;
 
 public interface BrokerNode extends Node {
 	
+	/**
+	 * Represents a share of the decryption key
+	 */
 	public static class DecryptionKeySecretShare extends Data
 	{
 		public DecryptionKeySecretShare(byte[] data) {
@@ -14,22 +18,30 @@ public interface BrokerNode extends Node {
 		}
 	}
 
-	public List<DataProviderNode> getDataProviders();
+	/**
+	 * Register a node as a data provider for the given data id
+	 */
+	public void registerDataProvider(UUID nodeId, UUID dataId);
 	
 	/**
-	 * Register a transaction.  This method is called by data providers before
-	 * data is provided.
+	 * Unregister a node as a data provider for the given data id
 	 */
-	public void registerTransaction(Signed<Transaction> transaction);
-
+	public void unregisterDataProvider(UUID nodeId, UUID dataId);
+	
+	/**
+	 * Returns a set of data providers for the given data id
+	 */
+	public Set<UUID> getDataProviders(UUID dataId);
+	
 	/**
 	 * Verify that the encrypted data hash matches the expected value. If the
-	 * hash matches forward a share of the payment authorization to the data 
+	 * hash matches forward a signed copy of the payment authorization to the data 
 	 * provider and return the decryption key share to the consumer.  This 
 	 * method is called by data consumers after data is received. 
 	 */
-	public DecryptionKeySecretShare finalizeTransaction(
+	public DecryptionKeySecretShare processTransaction(
 		Transaction transaction, 
 		Signed<CurrencyTransferAuthorization> transferAuthorization, 
-		Signed<Data> encryptedDataHash);	
+		Signed<Data> encryptedDataHash);
+
 }

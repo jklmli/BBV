@@ -95,4 +95,8 @@ public interface NodeManager {
 
 	int getBrokerThresholdForData(UUID dataId);
 
+	int getBankNodeThreshold(UUID consumerId);
+
+	DataProviderNode getDataProvider(UUID providerId);
+
 }

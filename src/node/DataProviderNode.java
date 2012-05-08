@@ -10,9 +10,15 @@ public interface DataProviderNode extends Node {
 	public Transaction requestData(Signed<DataRequest> dataRequest);
 	public Data getData(Transaction transaction);
 	
+	/**
+	 * Returns the encrypted data has for the data with the given id
+	 */
 	public Data getEncryptedDataHash(UUID dataId);
-	
-	public Data getGetDecryptionKeyFragmentForBroker(UUID dataId, UUID brokerId);
+
+	/**
+	 * Return a share of the data decryption key for the given broker 
+	 */
+	public Data getGetDecryptionKeyShareForBroker(UUID dataId, UUID brokerId);
 	
 	/**
 	 * Adds a currency transfer authorization.  When the node receives 

@@ -109,7 +109,7 @@ public class SimulatedDataProviderNode extends SimulatedNode implements DataProv
 	}
 
 	@Override
-	public Data getGetDecryptionKeyFragmentForBroker(UUID dataId, UUID brokerId) {
+	public Data getGetDecryptionKeyShareForBroker(UUID dataId, UUID brokerId) {
 		Data encryptionKey = getEncryptionKeyForData(dataId);
 		List<Data> decryptionKeyFragments = sharedSecretCodec.encode(encryptionKey);
 		
@@ -166,7 +166,7 @@ public class SimulatedDataProviderNode extends SimulatedNode implements DataProv
 			// forward it on to the consumer's bank nodes
 			for(BankNode bankNode : transactionContext.getConsumerBankNodes())
 			{
-				bankNode.transferCurrency(
+				bankNode.sendCurrency(
 					new SimulationSigned<Transaction>(getId(), transaction), 
 					txnCurrencyTransferAuthorization);
 			}

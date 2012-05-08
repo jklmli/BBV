@@ -1,0 +1,5 @@
+package node;
+
+public enum NodeRole {
+	BANK_NODE, BROKER_NODE, DATA_CONSUMER_NODE, DATA_PROVIDER_NODE, SYSTEM_BANK
+}

@@ -15,11 +15,12 @@ public abstract class SimulatedNode implements Node {
 	protected UUID id;
 	protected NodeManager nodeManager;
 	protected Map<UUID, Data> dataStore;
-	
+		
 	// TODO: Initialize these
 	protected final SymmetricEncryptionCodec encryptionCodec = null;
 	protected final HashCodec hashCodec = null;
 	protected final SharedSecretCodec sharedSecretCodec = null;
+	protected Data privateSigningKey;
 
 	
 	public SimulatedNode(UUID id, NodeManager nodeManager, Map<UUID, Data> dataStore)

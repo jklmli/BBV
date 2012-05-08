@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.UUID;
 
 import node.BankNode;
@@ -16,6 +17,11 @@ import simulation.SimulationNode;
 
 public class MemoryNodeManager implements NodeManager {
 
+	// TODO: Do not use fixed values for these
+	private static final int SET_SIZE = 5;
+	private static final int SET_THRESHOLD = 3;
+	
+	
 	public static class ListNodeGroup<T extends Node> implements NodeGroup<T>
 	{
 		private final List<T> nodes;
@@ -61,10 +67,8 @@ public class MemoryNodeManager implements NodeManager {
 		}
 	}
 
-	private static Map<UUID, Node> nodes = new HashMap<UUID, Node>();
-	private static Map<UUID, List<DataProviderNode>> dataProviderMap = 
-		new HashMap<UUID, List<DataProviderNode>>();
-	
+	private static TreeMap<UUID, Node> nodes = new TreeMap<UUID, Node>();
+		
 	private SimulationNode node;
 	
 	@Override
@@ -89,49 +93,100 @@ public class MemoryNodeManager implements NodeManager {
 
 	@Override
 	public void registerAsProviderForData(UUID dataId) {
-		List<DataProviderNode> providers = dataProviderMap.get(dataId);
-		if(providers == null)
+		List<BrokerNode> brokers = getBrokerNodesForData(dataId).getNodes();
+
+		for(BrokerNode broker : brokers)
 		{
-			providers = new ArrayList<DataProviderNode>();
-			dataProviderMap.put(dataId, providers);
+			broker.registerDataProvider(node.getId(), dataId);
 		}
-		
-		providers.add(node.getDataProviderNodeBehavior());
 	}
 
 	@Override
 	public void unregisterFromProvidersForData(DataProviderNode dataProvider,
 			UUID dataId) {
-		List<DataProviderNode> providers = dataProviderMap.get(dataId);
-		if(providers != null)
+		List<BrokerNode> brokers = getBrokerNodesForData(dataId).getNodes();
+
+		for(BrokerNode broker : brokers)
 		{
-			providers.remove(dataProvider);
-		}		
+			broker.unregisterDataProvider(node.getId(), dataId);
+		}
 	}
 
 	@Override
 	public NodeGroup<DataProviderNode> getDataProvidersForData(UUID dataId) {
-		return new ListNodeGroup<DataProviderNode>(dataProviderMap.get(dataId));
+		List<BrokerNode> brokers = getBrokerNodesForData(dataId).getNodes();
+
+		Map<UUID, DataProviderNode> providers = new HashMap<UUID, DataProviderNode>();
+		
+		for(BrokerNode broker : brokers)
+		{
+			for(UUID providerId : broker.getDataProviders(dataId))
+			{
+				providers.put(providerId, getDataProvider(providerId));
+			}
+		}
+		
+		return new ListNodeGroup<DataProviderNode>(
+			new ArrayList<DataProviderNode>(providers.values()));
+	}
+	
+	@Override
+	public DataProviderNode getDataProvider(UUID providerId) {
+		return (DataProviderNode) nodes.get(providerId);
 	}
 
 	@Override
 	public NodeGroup<BankNode> getBankNodesForNode(UUID nodeId) {
-		return null;
+		List<BankNode> bankNodes = new ArrayList<BankNode>();
+		for(Node node : getNodesNearId(nodeId, SET_SIZE))
+		{
+			bankNodes.add((BankNode) node);
+		}
+		
+		return new ListNodeGroup<BankNode>(bankNodes);
+	}
+	
+	@Override
+	public int getBankNodeThreshold(UUID nodeId) {
+		return SET_THRESHOLD;
 	}
 
 	@Override
 	public NodeGroup<BrokerNode> getBrokerNodesForData(UUID dataId) {
-		return null;
+		List<BrokerNode> brokers = new ArrayList<BrokerNode>();
+		for(Node node : getNodesNearId(dataId, SET_SIZE))
+		{
+			brokers.add((BrokerNode) node);
+		}
+		
+		return new ListNodeGroup<BrokerNode>(brokers);
 	}
 
 	@Override
 	public NodeGroup<BrokerNode> getBrokerNodes(Set<UUID> brokerNodeIds) {
-		return null;
+		List<BrokerNode> brokers = new ArrayList<BrokerNode>();
+		
+		for(UUID brokerId : brokerNodeIds)
+		{
+			BrokerNode broker = (BrokerNode) nodes.get(brokerId);
+			
+			if(broker != null)
+			{
+				brokers.add(broker);
+			}
+		}
+		
+		return new ListNodeGroup<BrokerNode>(brokers);
 	}
 
 	@Override
 	public int getBrokerThresholdForData(UUID dataId) {
-		return getBrokerNodesForData(dataId).getNodes().size();
+		return SET_THRESHOLD;
 	}
 	
+	public List<Node> getNodesNearId(UUID id, int count)
+	{		
+		// TODO: Implement this
+		return null;
+	}
 }

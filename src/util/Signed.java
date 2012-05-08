@@ -10,7 +10,9 @@ public interface Signed<T> {
 	public T getObject();	
 	public boolean isSignatureValid();	
 	public Data getData();
-	
+
+	public void sign(UUID id, Data privateSigningKey);
+
 	public void addSignatures(Signed<T> signedObject);
 	public int getSigningNodeCount(Set<UUID> nodeIds);
 }

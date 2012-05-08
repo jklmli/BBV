@@ -75,4 +75,8 @@ public class SimulationSigned<T> implements util.Signed<T> {
 		return signingNodeCount;
 	}
 
+	@Override
+	public void sign(UUID id, Data privateSigningKey) {
+		signingNodeIds.add(id);
+	}
 }

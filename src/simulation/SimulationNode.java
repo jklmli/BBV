@@ -13,6 +13,8 @@ import node.DataProviderNode;
 import node.Node;
 import node.NodeManager;
 import simulation.node.MemoryNodeManager;
+import simulation.node.SimulatedBankNode;
+import simulation.node.SimulatedBrokerNode;
 import simulation.node.SimulatedDataConsumerNode;
 import simulation.node.SimulatedDataProviderNode;
 import data.Data;
@@ -39,8 +41,8 @@ public class SimulationNode implements Node {
 		
 		consumerNodeBehavior = new SimulatedDataConsumerNode(id, nodeManager, dataStore);
 		providerNodeBehavior = new SimulatedDataProviderNode(id, nodeManager, dataStore);
-		brokerNodeBehavior = null;
-		bankNodeBehavior = null;
+		brokerNodeBehavior = new SimulatedBrokerNode(id, nodeManager, dataStore);
+		bankNodeBehavior = new SimulatedBankNode(id, nodeManager, dataStore);
 	}
 	
 	@Override
