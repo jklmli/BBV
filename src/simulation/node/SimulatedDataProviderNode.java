@@ -170,6 +170,9 @@ public class SimulatedDataProviderNode extends SimulatedNode implements DataProv
 					new SimulationSigned<Transaction>(getId(), transaction), 
 					txnCurrencyTransferAuthorization);
 			}
+			
+			// TODO: Create signed transaction record / satisfaction statement 
+			// and send to the appropriate bank nodes  
 		}
 	}
 

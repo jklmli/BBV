@@ -91,6 +91,9 @@ public class SimulatedDataConsumerNode extends SimulatedNode implements DataCons
 			
 			Simulation.getInstance().getStatistics().incrementDataTransferCount();
 			
+			// TODO: Create signed transaction record / satisfaction statement 
+			// and send to the appropriate bank nodes  
+			
 			return decryptedData;
 		} catch(Throwable e)
 		{
