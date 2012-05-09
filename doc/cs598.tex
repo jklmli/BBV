@@ -292,77 +292,10 @@ Brokers would have no reason to do this unless they were bribed by a malicious n
 The decryption key is not useful without the data. A data consumer could buy the decryption key from one provider and then obtain the data from another provider without paying, but their reputation would suffer.  There is no way to guarantee that the provider will give the key after receiving payment.
 
 %----------------------------------------------------------------------
-% SECTION III: Simulation
+% SECTION III: Implementation
 %----------------------------------------------------------------------
-\section{Simulation}
-In order to evaluate the effectiveness of our system design we will be implementing a simulated peer to peer cloud storage network.  This approach will allow us to quickly test many scenarios involving a large number of nodes and data transfers. 
-
-\subsection{Implementation}
-The implementation of our simulation will combine fully functional component implementations with simulation component implementations.  The simulation will be driven by simulated nodes with various behaviors.  These simulated nodes will perform the actions that they typically would in the real system and may be fully cooperative or uncooperative in various ways.  A simulated node is made by combining simulated behaviors for each of the roles the node may take in the system.
-
-\begin{center}
-  \begin{tabular}{ p{6.25cm} }
-    \bf Data Consumer Node \\ \hline
-    \hline
-    Fully cooperative \\ \hline
-    Fails to provide payment to the broker with a given probability \\ \hline
-    Fails to provide correct payment amount to the broker with a given probability \\ \hline
-    Fails to provide payment transfer for the correct node to the broker with a given probability \\ \hline
-    Permanently stops consuming data with a given probability \\
-    \hline
-  \end{tabular}
-\end{center}
-
-\begin{center}
-  \begin{tabular}{ p{6.25cm} }
-    \bf Data Provider Node \\ \hline
-    \hline
-    Fully cooperative \\ \hline
-    Fails to provide correct data with a given probability \\ \hline
-    Provides data at a slow rate with a given probability \\ \hline
-    Permanently stops providing data with a given probability \\ \hline
-  \end{tabular}
-\end{center}
-
-\begin{center}
-  \begin{tabular}{ p{6.25cm} }
-    \bf Bank Node \\ \hline
-    \hline
-    Fully cooperative \\ \hline
-    Fails to store currency transfer authorizations with a given probability \\ \hline
-    Accepts invalid transfer authorizations with a given probability \\ \hline
-    Declines valid transfer authorizations with a given probability \\ \hline
-    Fails to forward transferred currency units to the proper bank nodes with a given probability \\ \hline
-    Permanently stops providing bank node functions with a given probability \\ \hline
-  \end{tabular}
-\end{center}
-
-\begin{center}
-  \begin{tabular}{ p{6.25cm} }
-    \bf Broker Node \\ \hline
-    \hline
-    Fully cooperative \\ \hline
-    Sends decryption key to consumer without proper payment with a given probability \\ \hline
-    Sends decryption key to consumer without forwarding payment transfer to bank nodes with a given probability \\ \hline
-    Sends invalid decryption key to consumer after authorizing payment \\ \hline
-    Fails to validate that payment transfer is for correct provider with a given probability \\ \hline
-  \end{tabular}
-\end{center}
-
-
-During each simulation the following statistics will be collected to measure the effectiveness of the system:
-
-\begin{itemize}
-\item The number of invalid bytes received by cooperating consumers
-\item The number of bytes received by cooperating consumers
-\item The number of bytes sent by providers to consumers that did not pay
-\item The number of bytes sent by providers
-\item The number of bank node requests
-\item The number of broker node requests
-\item The number of data transfer requests
-\end{itemize}
-
-When a node joins the simulated network it will either be made a fully cooperative node or an uncooperative node.  The probability that a node will be uncooperative along with the behavior probabilities will be set based on the simulation parameters.
+\section{Implementation}
+Due to the complexity and distributed nature of our system we decided to focus on creating a simulation for our initial implementation.  The advantage of this approach is that it would allow us to quickly test many scenarios involving a large number of nodes and data transfers. A simulation enables numerous statistics to be collected which can be used to evaluate reliability and administrative overhead.  A simulation is also an excellent starting point for a fully functional implementation.  The system can be tested as simulated components are replaced with fully functional implementations. A primary goal of our simulation design was to allow a wide range of node behaviors to be tested.  To achieve this the simulated nodes are actors which capable of performing the actions they would in the real system.  Different behavior implementations can be used to generate simulated nodes that are fully cooperative or uncooperative in various ways. 
 
 \subsection{Distributed Hash Table}
 Kademlia was chosen as an alternative to Chord for use as the DHT serving node 
@@ -377,9 +310,8 @@ ones.  Furthermore, Kademlia's use of a single routing algorithm, as opposed to
 the dual gauge-and-pinpoint algorithms or other protocols, is both easier to 
 understand and implement from a design perspective.
 
+\subsection{Current Status}
 
-\subsection{Simulation Results}
-Implementation of the simulation is currently in progress.
 
 %----------------------------------------------------------------------
 % SECTION IV: Conclusion
